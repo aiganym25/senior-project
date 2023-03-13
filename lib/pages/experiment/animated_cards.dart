@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:senior_project/const.dart';
 
-class BodyScreen extends StatefulWidget {
-  const BodyScreen({Key? key}) : super(key: key);
+class AnimatedCardsPage extends StatefulWidget {
+  const AnimatedCardsPage({Key? key}) : super(key: key);
 
   @override
-  State<BodyScreen> createState() => _BodyScreenState();
+  State<AnimatedCardsPage> createState() => _AnimatedCardsPageState();
 }
 
-class _BodyScreenState extends State<BodyScreen>
+class _AnimatedCardsPageState extends State<AnimatedCardsPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> messageAnimation;
@@ -91,20 +91,25 @@ class _BodyScreenState extends State<BodyScreen>
                   ),
                 ),
                 child: Center(
-                  child: DefaultTextStyle(
-                    style: GoogleFonts.livvic(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                    child: FadeAnimatedTextKit(
-                      onFinished: () =>
-                          Navigator.pushNamed(context, '/fillIn'),
-                      repeatForever: false,
-                      totalRepeatCount: 1,
-                      duration: const Duration(milliseconds: 1500),
-                      text: listOfWords,
-                    ),
+                  child: AnimatedTextKit(
+                    onFinished: () => Navigator.pushNamed(context, '/fillIn'),
+                    repeatForever: false,
+                    totalRepeatCount: 1,
+                    // duration: const Duration(milliseconds: 1500),
+                    animatedTexts: listOfWords.map((word) {
+                      return FadeAnimatedText(
+                        word,
+                        textStyle: GoogleFonts.livvic(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                        duration: const Duration(milliseconds: 1500),
+
+                        // fadeOutBegin: Curves.easeOut,
+                        // fadeInEnd: Curves.easeIn,
+                      );
+                    }).toList(),
                   ),
                 ),
               )

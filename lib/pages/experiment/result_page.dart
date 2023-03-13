@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:senior_project/pages/user_main_page/user_page.dart';
 
-import '../const.dart';
+import '../../const.dart';
 
 class Result extends StatefulWidget {
   Result({Key? key, required this.words}) : super(key: key);
@@ -33,6 +34,19 @@ class _ResultState extends State<Result> {
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const UserPage(),
+                        ),
+                      );
+                    },
+                    child: const Align(
+                      alignment: Alignment.topRight,
+                      child: Icon(Icons.home_outlined, size: 40),
+                    ),
+                  ),
                   Text(
                     'Results',
                     style: GoogleFonts.livvic(
@@ -48,7 +62,9 @@ class _ResultState extends State<Result> {
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
-                  const SizedBox(height: 32,),
+                  const SizedBox(
+                    height: 32,
+                  ),
                   Expanded(
                     child: ListView.builder(
                         itemCount: listOfWords.length,
@@ -85,26 +101,6 @@ class _ResultState extends State<Result> {
                                 ],
                               ));
                         }),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('home_page');
-                    },
-                    child: Container(
-                      height: 40,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: const Color.fromRGBO(131, 89, 227, 1),
-                      ),
-                      child: const Center(
-                        child: Text('Try again',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18)),
-                      ),
-                    ),
                   ),
                 ],
               ),

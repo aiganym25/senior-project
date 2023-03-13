@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/widgets/available_experiments.dart';
-import 'package:senior_project/widgets/created_experimet.dart';
+import 'package:senior_project/pages/home_page.dart';
+import 'package:senior_project/pages/user_main_page/available_experiments.dart';
+import 'package:senior_project/pages/user_main_page/created_experiment.dart';
 import 'package:senior_project/widgets/swipable_tabbar.dart';
 
 class UserPage extends StatefulWidget {
@@ -31,14 +32,37 @@ class _UserPageState extends State<UserPage> {
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            child: Column(children: const [
-              Center(
+            child: Column(children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const HomePage(),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(Icons.logout_rounded, size: 30),
+                      Text('Log out',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600))
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const Center(
                 child: Text('Welcome, John',
                     style:
                         TextStyle(fontWeight: FontWeight.w700, fontSize: 32)),
               ),
-              SizedBox(height: 32),
-              SwipableTabbar(childrens: [
+              const SizedBox(height: 32),
+              const SwipableTabbar(childrens: [
                 AvailableExperiments(),
                 CreatedExperiment(),
               ]),

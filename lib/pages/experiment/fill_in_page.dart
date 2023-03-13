@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:senior_project/widgets/result.dart';
+import 'package:senior_project/pages/experiment/result_page.dart';
 
-import '../const.dart';
+import '../../const.dart';
 
 class FillInWords extends StatefulWidget {
   const FillInWords({Key? key}) : super(key: key);

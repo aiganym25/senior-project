@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/widgets/body_screen.dart';
+import 'package:senior_project/pages/experiment/animated_cards.dart';
 
 class AvailableExperiments extends StatefulWidget {
   const AvailableExperiments({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) => const BodyScreen(),
+                          builder: (BuildContext context) => const AnimatedCardsPage(),
                         ),
                       );
                     },

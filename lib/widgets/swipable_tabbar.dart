@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SwipableTabbar extends StatefulWidget {
   const SwipableTabbar({Key? key, required this.childrens}) : super(key: key);
@@ -49,28 +50,28 @@ class _SwipableTabbarState extends State<SwipableTabbar>
           Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 50),
+                padding: EdgeInsets.only(top: 53.h),
                 child: Container(
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
-                  height: 8,
+                  height: 8.h,
                 ),
               ),
               TabBar(
-                  labelPadding: const EdgeInsets.only(bottom: 8),
+                  labelPadding: EdgeInsets.only(bottom: 14.h),
                   controller: _controller,
                   unselectedLabelColor: Colors.black,
                   indicatorColor: const Color.fromRGBO(131, 89, 227, 1),
                   labelColor: const Color.fromRGBO(131, 89, 227, 1),
-                  indicatorWeight: 8,
-                  labelStyle: const TextStyle(
+                  indicatorWeight: 9.h,
+                  labelStyle: TextStyle(
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Color.fromRGBO(131, 89, 227, 1)),
-                  unselectedLabelStyle: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
+                      fontSize: 18.w,
+                      color: const Color.fromRGBO(131, 89, 227, 1)),
+                  unselectedLabelStyle: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.w,
                       color: Colors.black),
                   tabs: tabs),
             ],
