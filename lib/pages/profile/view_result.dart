@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:senior_project/pages/user_main_page/user_page.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ViewResult extends StatelessWidget {
