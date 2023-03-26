@@ -10,23 +10,22 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 40,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: const Color.fromRGBO(131, 89, 227, 1),
-        ),
-        child: Center(
-          child: Text(txt,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 18)),
-        ),
-      );
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 8,
+      ),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: const Color.fromRGBO(248, 180, 1, 1),
+      ),
+      child: Center(
+        child: Text(txt,
+            style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                fontSize: 20)),
+      ),
+    );
   }
 }

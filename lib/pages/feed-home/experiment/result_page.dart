@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:senior_project/pages/user_main_page/user_page.dart';
 
-import '../../const.dart';
+import '../../../const.dart';
 
 class Result extends StatefulWidget {
   Result({Key? key, required this.words}) : super(key: key);
@@ -25,7 +24,19 @@ class _ResultState extends State<Result> {
       }
     }
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 137, 198, 233),
+      backgroundColor: const Color.fromRGBO(248, 180, 1, 1),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(248, 180, 1, 1),
+        title: const Text(
+          'Results',
+          style: TextStyle(
+              fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 20.h),
@@ -34,26 +45,6 @@ class _ResultState extends State<Result> {
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => const UserPage(),
-                        ),
-                      );
-                    },
-                    child: const Align(
-                      alignment: Alignment.topRight,
-                      child: Icon(Icons.home_outlined, size: 40),
-                    ),
-                  ),
-                  Text(
-                    'Results',
-                    style: GoogleFonts.livvic(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
                   const SizedBox(height: 32),
                   Text(
                     'You remembered $correctWords words out of  ${listOfWords.length}: ',

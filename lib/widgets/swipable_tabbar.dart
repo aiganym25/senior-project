@@ -14,8 +14,8 @@ class _SwipableTabbarState extends State<SwipableTabbar>
   late TabController _controller;
 
   late List<Widget> tabs = [
-    const Text("Available Experiments"),
-    const Text("Created Experiments"),
+    const Text("Joinable"),
+    const Text("Requests"),
   ];
 
   @override
@@ -44,46 +44,42 @@ class _SwipableTabbarState extends State<SwipableTabbar>
     _controller.addListener(() {
       changeTitle(_controller.index);
     });
-    return Flexible(
-      child: SizedBox(
-        child: Column(children: [
-          Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 53.h),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  height: 8.h,
-                ),
-              ),
-              TabBar(
-                  labelPadding: EdgeInsets.only(bottom: 14.h),
-                  controller: _controller,
-                  unselectedLabelColor: Colors.black,
-                  indicatorColor: const Color.fromRGBO(131, 89, 227, 1),
-                  labelColor: const Color.fromRGBO(131, 89, 227, 1),
-                  indicatorWeight: 9.h,
-                  labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.w,
-                      color: const Color.fromRGBO(131, 89, 227, 1)),
-                  unselectedLabelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18.w,
-                      color: Colors.black),
-                  tabs: tabs),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _controller,
-              children: widget.childrens,
-            ),
-          )
-        ]),
+    return Column(
+      children: [
+      TabBar(
+          labelPadding: EdgeInsets.only(bottom: 14.h),
+          controller: _controller,
+          unselectedLabelColor: const Color.fromRGBO(255, 255, 255, 0.8),
+          indicatorColor: const Color.fromRGBO(255, 255, 255, 1),
+          labelColor: const Color.fromRGBO(255, 255, 255, 1),
+          indicatorWeight: 5.h,
+          labelStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18.w,
+              color: const Color.fromRGBO(255, 255, 255, 1)),
+          unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18.w,
+              color: const Color.fromRGBO(255, 255, 255, 1)),
+          tabs: tabs),
+      const SizedBox(
+        height: 32,
       ),
-    );
+      Expanded(
+        child: Container(
+          padding: const EdgeInsets.only(top: 50,),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30)
+            )),
+          child: TabBarView(
+            controller: _controller,
+            children: widget.childrens,
+          ),
+        ),
+      )
+    ]);
   }
 }

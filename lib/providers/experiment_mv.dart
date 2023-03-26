@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class ExperimentParametersMV extends ChangeNotifier{
   int numberOfWords = 0; 
   int timeShowTime = 0;
-  int upperLimit = 0; 
-  int lowerLimit = 0; 
+  String upperLimit = ''; 
+  String lowerLimit = ''; 
   int lengthOfWords = 0;
 
   void setNumberOfWords(val){
@@ -25,6 +25,7 @@ class ExperimentParametersMV extends ChangeNotifier{
   void setRangeOfWords(upper, lower){
     upperLimit = upper; 
     lowerLimit = lower;
+    print(upperLimit);
     notifyListeners();
   }
 

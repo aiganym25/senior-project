@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/pages/user_main_page/user_page.dart';
+import 'package:senior_project/pages/main_page.dart';
 import 'package:senior_project/widgets/buttons/button.dart';
 import 'package:senior_project/widgets/input_widget.dart';
 
@@ -107,7 +107,7 @@ class CreateAccButton extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => const UserPage(),
+            builder: (BuildContext context) => const MainPage(),
           ),
         );
       },
