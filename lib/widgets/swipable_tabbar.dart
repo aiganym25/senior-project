@@ -45,41 +45,42 @@ class _SwipableTabbarState extends State<SwipableTabbar>
       changeTitle(_controller.index);
     });
     return Column(
-      children: [
-      TabBar(
-          labelPadding: EdgeInsets.only(bottom: 14.h),
-          controller: _controller,
-          unselectedLabelColor: const Color.fromRGBO(255, 255, 255, 0.8),
-          indicatorColor: const Color.fromRGBO(255, 255, 255, 1),
-          labelColor: const Color.fromRGBO(255, 255, 255, 1),
-          indicatorWeight: 5.h,
-          labelStyle: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 18.w,
-              color: const Color.fromRGBO(255, 255, 255, 1)),
-          unselectedLabelStyle: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 18.w,
-              color: const Color.fromRGBO(255, 255, 255, 1)),
-          tabs: tabs),
-      const SizedBox(
-        height: 32,
-      ),
-      Expanded(
-        child: Container(
-          padding: const EdgeInsets.only(top: 50,),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30)
-            )),
-          child: TabBarView(
-            controller: _controller,
-            children: widget.childrens,
+        children: [
+          TabBar(
+              labelPadding: EdgeInsets.only(bottom: 14.h),
+              controller: _controller,
+              unselectedLabelColor: const Color.fromRGBO(255, 255, 255, 0.8),
+              indicatorColor: const Color.fromRGBO(255, 255, 255, 1),
+              labelColor: const Color.fromRGBO(255, 255, 255, 1),
+              indicatorWeight: 5.h,
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.w,
+                  color: const Color.fromRGBO(255, 255, 255, 1)),
+              unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.w,
+                  color: const Color.fromRGBO(255, 255, 255, 1)),
+              tabs: tabs),
+          const SizedBox(
+            height: 32,
           ),
-        ),
-      )
-    ]);
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(
+                top: 25,
+              ),
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30))),
+              child: TabBarView(
+                controller: _controller,
+                children: widget.childrens,
+              ),
+            ),
+          )
+        ]);
   }
 }

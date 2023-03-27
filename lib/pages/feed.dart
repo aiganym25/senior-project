@@ -21,18 +21,23 @@ class _FeedPageState extends State<FeedPage> {
           child: Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.9,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                height: MediaQuery.of(context).size.height,
+                width: double.infinity,
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
                 child: const Text(
                   'Experiments',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 32,
                       fontFamily: 'Sansation',
-                      fontWeight: FontWeight.w700),
+                      fontWeight: FontWeight.w800),
                 ),
               ),
-              Expanded(
+              Positioned(
+                top: 70,
+                left: 0,
+                bottom: 0,
+                right: 0,
                 child: SwipableTabbar(childrens: [
                   ChangeNotifierProvider<RequestedExperimentsMV>(
                     create: (_) => RequestedExperimentsMV(),

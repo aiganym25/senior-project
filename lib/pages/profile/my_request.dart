@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/widgets/experiment_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:senior_project/pages/providers/request_mv.dart';
 
 class MyRequests extends StatefulWidget {
   const MyRequests({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class MyRequests extends StatefulWidget {
 class _MyRequestsState extends State<MyRequests> {
   @override
   Widget build(BuildContext context) {
+    bool isAccepted =
+        context.select((RequestedExperimentsMV mv) => mv.isAccepted);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -40,104 +43,120 @@ class _MyRequestsState extends State<MyRequests> {
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: 2,
+                      itemCount: 1,
                       itemBuilder: (context, index) {
-                        return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            margin: const EdgeInsets.only(bottom: 20),
-                            width: double.infinity,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                                    offset: Offset(4.0, 4.0),
-                                    blurRadius: 4.0,
-                                    spreadRadius: 3),
-                              ],
-                              border: Border.all(
-                                color: const Color.fromRGBO(0, 0, 0, 0.25),
-                                width: 1.0,
-                              ),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: const [
-                                    Text(
-                                      "Experiment 1",
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'ospan.aiganym@gmail.com',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black),
-                                    ),
-                                  ],
+                        return AnimatedOpacity(
+                          opacity: !isAccepted ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                              margin: const EdgeInsets.only(bottom: 20),
+                              width: double.infinity,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      offset: Offset(4.0, 4.0),
+                                      blurRadius: 4.0,
+                                      spreadRadius: 3),
+                                ],
+                                border: Border.all(
+                                  color: const Color.fromRGBO(0, 0, 0, 0.25),
+                                  width: 1.0,
                                 ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
-                                      decoration: const BoxDecoration(
-                                        color: Color.fromRGBO(0, 183, 152, 1),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: const [
+                                      Text(
+                                        "Experiment 1",
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        'ospan.aiganym@gmail.com',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Provider.of<RequestedExperimentsMV>(
+                                                  context,
+                                                  listen: false)
+                                              .changeIsAccepted();
+                                        },
+                                        child: Container(
+                                          width: 100,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15),
+                                          decoration: const BoxDecoration(
+                                            color:
+                                                Color.fromRGBO(0, 183, 152, 1),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(15),
+                                            ),
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              "Accept",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      child: const Center(
-                                        child: Text(
-                                          "Accept",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
+                                      Container(
+                                        width: 100,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15),
+                                        decoration: const BoxDecoration(
+                                          color: Color.fromRGBO(178, 2, 2, 1),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 100,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
-                                      decoration: const BoxDecoration(
-                                        color: Color.fromRGBO(178, 2, 2, 1),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
+                                        child: const Center(
+                                          child: Text(
+                                            "Reject",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white),
+                                          ),
                                         ),
-                                      ),
-                                      child: const Center(
-                                        child: Text(
-                                          "Reject",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ));
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )),
+                        );
                       },
-                    ),
+                    )
                   ],
                 ),
               )),

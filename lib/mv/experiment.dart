@@ -4,8 +4,8 @@ part 'experiment.freezed.dart';
 part 'experiment.g.dart';
 
 @freezed
-class Experiment with _$Experiment {
-  const factory Experiment({
+class NewExperiment with _$NewExperiment {
+  const factory NewExperiment({
     @JsonSerializable(explicitToJson: true)
     required String name,
     required String description,
@@ -13,8 +13,8 @@ class Experiment with _$Experiment {
     required double numberOfSecondsPerWord,
     required List<int> frequencyRange,
     required List<int> lengthOfWords,
-  }) = _Experiment;
+  }) = _NewExperiment;
 
-  factory Experiment.fromJson(Map<String, Object?> json)
-      => _$ExperimentFromJson(json);
+  factory NewExperiment.fromJson(Map<String, Object?> json)
+      => _$NewExperimentFromJson(json);
 }

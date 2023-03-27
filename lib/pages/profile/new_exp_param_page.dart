@@ -1,27 +1,26 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:senior_project/pages/profile/created_experiment.dart';
 import 'package:senior_project/repo/base_client.dart';
 import 'package:senior_project/mv/experiment.dart';
-import 'package:senior_project/providers/experiment_mv.dart';
+import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/widgets/buttons/button.dart';
+import 'package:senior_project/mv/get_experiment.dart';
 
-class NewExperiment extends StatefulWidget {
-  const NewExperiment({Key? key}) : super(key: key);
+class NewExperimentPage extends StatefulWidget {
+  const NewExperimentPage({Key? key}) : super(key: key);
 
   @override
-  State<NewExperiment> createState() => _NewExperimentState();
+  State<NewExperimentPage> createState() => _NewExperimentPageState();
 }
 
-class _NewExperimentState extends State<NewExperiment> {
-  final wordController = TextEditingController();
-  final wordShowTimeController = TextEditingController();
-  final upperLimitController = TextEditingController();
-  final lowerLimitController = TextEditingController();
-
+class _NewExperimentPageState extends State<NewExperimentPage> {
   @override
   Widget build(BuildContext context) {
+    final experimentParameters = context.watch<ExperimentParametersMV>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -46,37 +45,76 @@ class _NewExperimentState extends State<NewExperiment> {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    NumberOfWordsInput(wordController: wordController),
-                    Time(wordShowTimeController: wordShowTimeController),
-                    const LengthWords(),
-                    FrequencyWords(
-                        upperLimitController: upperLimitController,
-                        lowerLimitController: lowerLimitController),
+                  children: const [
+                    TitleOfExperiment(),
+                    NumberOfWordsInput(),
+                    Time(),
+                    LengthWords(),
+                    FrequencyWords(),
                   ],
                 ),
               ),
               GestureDetector(
                   onTap: () async {
-                    var newExperiment = const Experiment(
-                        name: "EXP3",
-                        description: "description of EXP3",
-                        numberOfWords: 11,
-                        numberOfSecondsPerWord: 1.0,
-                        frequencyRange: [3000, 14000],
+                    print('title of the experiment');
+                    var title = context.read<ExperimentParametersMV>().title;
+                    var numberOfWords =
+                        context.read<ExperimentParametersMV>().numberOfWords;
+                    var upperLimit =
+                        context.read<ExperimentParametersMV>().upperLimit;
+                    var lowerLimit =
+                        context.read<ExperimentParametersMV>().lowerLimit;
+                    var wordShowTime =
+                        context.read<ExperimentParametersMV>().wordShowTime;
+                    print(title);
+                    var newExperiment = NewExperiment(
+                        name: title,
+                        description: "description of ${title}",
+                        numberOfWords: numberOfWords,
+                        numberOfSecondsPerWord: wordShowTime,
+                        frequencyRange: [lowerLimit, upperLimit],
                         lengthOfWords: [3]);
 
                     var activityData = newExperiment.toJson();
+                    if (activityData != null) {
+                      print(activityData);
+                      // var body = jsonEncode(activityData);
+                      // ... rest of the code
+                    } else {
+                      print('activityData is null');
+                    }
+                    try {
+                      var response = await BaseClient().postExperiment(
+                          'https://my-spring-app-sp.herokuapp.com/api/v1/experiment/newExperiment',
+                          activityData);
+                      print(response.body);
+                      int id = GetExperiment.fromJson(jsonDecode(response.body))
+                          .data
+                          .experimentId;
+                      // print(id);
+                      Provider.of<ExperimentParametersMV>(context,
+                              listen: false)
+                          .isEmpty = false;
+                      // Provider.of<ExperimentParametersMV>(context,
+                      //         listen: false)
+                      //     .experimentId = id;
+                      experimentParameters.setId(id);
+                      print(experimentParameters.id);
+                      // Navigator.pushNamed(context, '/my_created_experiments');
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              CreatedExperiment(id: experimentParameters.id, title:  experimentParameters.title),
+                        ),
+                      );
+                    } catch (er) {
+                      print('eror');
+                      print(er);
+                    }
 
-                    var response = await BaseClient()
-                        .postExperiment(
-                            'https://my-spring-app-sp.herokuapp.com/api/v1/experiment/newExperiment',
-                            activityData)
-                        .catchError((err) {
-                      print(err);
-                    });
-                    var getRequest = await BaseClient().getExperiments(
-                        'https://my-spring-app-sp.herokuapp.com/api/v1/experiment/getExperiment/1');
+                    // var getRequest = await BaseClient().getExperiments(
+                    //     'https://my-spring-app-sp.herokuapp.com/api/v1/experiment/getExperiment/1');
+                    // print(getRequest);
                   },
                   child: ButtonWidget(txt: 'Create')),
             ],
@@ -102,9 +140,7 @@ class _NewExperimentState extends State<NewExperiment> {
   //     .read<ExperimentParametersMV>()
   //     .lengthOfWords);
   // print('number of words');
-  // print(context
-  //     .read<ExperimentParametersMV>()
-  //     .numberOfWords);
+
   // print('show time');
   // print(context
   //     .read<ExperimentParametersMV>()
@@ -120,12 +156,8 @@ class _NewExperimentState extends State<NewExperiment> {
 }
 
 class FrequencyWords extends StatefulWidget {
-  var upperLimitController = TextEditingController();
-  var lowerLimitController = TextEditingController();
-  FrequencyWords({
+  const FrequencyWords({
     Key? key,
-    required this.upperLimitController,
-    required this.lowerLimitController,
   }) : super(key: key);
 
   @override
@@ -141,6 +173,8 @@ class _FrequencyWordsState extends State<FrequencyWords> {
     '15000 - 20000',
     '20000 - 25000',
   ];
+  final upperLimitController = TextEditingController();
+  final lowerLimitController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -171,10 +205,10 @@ class _FrequencyWordsState extends State<FrequencyWords> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextFormField(
-              controller: widget.lowerLimitController,
+              controller: lowerLimitController,
               onChanged: (value) {
                 Provider.of<ExperimentParametersMV>(context, listen: false)
-                    .lowerLimit = value;
+                    .lowerLimit = int.parse(value);
               },
               keyboardType: TextInputType.number,
               style: GoogleFonts.livvic(
@@ -206,10 +240,10 @@ class _FrequencyWordsState extends State<FrequencyWords> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextFormField(
-              controller: widget.upperLimitController,
+              controller: upperLimitController,
               onChanged: (value) {
                 Provider.of<ExperimentParametersMV>(context, listen: false)
-                    .upperLimit = value;
+                    .upperLimit = int.parse(value);
               },
               keyboardType: TextInputType.number,
               style: GoogleFonts.livvic(
@@ -282,14 +316,14 @@ class _LengthWordsState extends State<LengthWords> {
 }
 
 class Time extends StatefulWidget {
-  TextEditingController wordShowTimeController;
-  Time({Key? key, required this.wordShowTimeController}) : super(key: key);
+  const Time({Key? key}) : super(key: key);
 
   @override
   State<Time> createState() => _TimeState();
 }
 
 class _TimeState extends State<Time> {
+  final wordShowTimeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -315,10 +349,10 @@ class _TimeState extends State<Time> {
                 // border: Border.all(color: Colors.grey),
               ),
               child: TextFormField(
-                controller: widget.wordShowTimeController,
+                controller: wordShowTimeController,
                 onChanged: (value) {
                   Provider.of<ExperimentParametersMV>(context, listen: false)
-                      .timeShowTime = int.parse(value);
+                      .wordShowTime = double.parse(value);
                 },
                 // keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(
@@ -340,8 +374,7 @@ class _TimeState extends State<Time> {
 }
 
 class NumberOfWordsInput extends StatefulWidget {
-  TextEditingController wordController;
-  NumberOfWordsInput({Key? key, required this.wordController})
+  const NumberOfWordsInput({Key? key})
       : super(
           key: key,
         );
@@ -351,6 +384,7 @@ class NumberOfWordsInput extends StatefulWidget {
 }
 
 class _NumberOfWordsInputState extends State<NumberOfWordsInput> {
+  final numberOfWordsController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -376,10 +410,70 @@ class _NumberOfWordsInputState extends State<NumberOfWordsInput> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextFormField(
-                controller: widget.wordController,
+                controller: numberOfWordsController,
                 onChanged: (value) {
                   Provider.of<ExperimentParametersMV>(context, listen: false)
                       .numberOfWords = int.parse(value);
+                },
+                keyboardType: TextInputType.number,
+                style: GoogleFonts.livvic(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    fontSize: 22),
+                decoration: const InputDecoration(
+                  filled: true,
+                  contentPadding: EdgeInsets.only(left: 15, bottom: 15),
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TitleOfExperiment extends StatefulWidget {
+  const TitleOfExperiment({Key? key})
+      : super(
+          key: key,
+        );
+
+  @override
+  State<TitleOfExperiment> createState() => _TitleOfExperimentState();
+}
+
+class _TitleOfExperimentState extends State<TitleOfExperiment> {
+  final titleController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Title of the experiment",
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            height: 38,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: TextFormField(
+                controller: titleController,
+                onChanged: (value) {
+                  Provider.of<ExperimentParametersMV>(context, listen: false)
+                      .title = value;
                 },
                 keyboardType: TextInputType.number,
                 style: GoogleFonts.livvic(

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:senior_project/mv/experiment.dart';
-import 'package:senior_project/pages/profile/new_exp_param_page.dart';
+import 'package:senior_project/mv/get_experiment.dart';
 
 const String baseURL = 'https://my-spring-app-sp.herokuapp.com/api/v1/';
 
@@ -15,8 +14,9 @@ class BaseClient {
     try {
       var response = await http.post(Uri.parse(url), body: body, headers: {
         "Accept": "application/json",
-        "content-type": "application/json"
+        "Content-Type": "application/json"
       });
+      return response;
       //  print(response.body);
       //  print(response.statusCode);
     } catch (er) {
@@ -28,7 +28,7 @@ class BaseClient {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      return Experiment.fromJson(jsonDecode(response.body));
+      return GetExperiment.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load expriments');
     }

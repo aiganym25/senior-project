@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Experiment _$ExperimentFromJson(Map<String, dynamic> json) {
-  return _Experiment.fromJson(json);
+NewExperiment _$NewExperimentFromJson(Map<String, dynamic> json) {
+  return _NewExperiment.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Experiment {
+mixin _$NewExperiment {
   @JsonSerializable(explicitToJson: true)
   String get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -30,15 +30,15 @@ mixin _$Experiment {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ExperimentCopyWith<Experiment> get copyWith =>
+  $NewExperimentCopyWith<NewExperiment> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ExperimentCopyWith<$Res> {
-  factory $ExperimentCopyWith(
-          Experiment value, $Res Function(Experiment) then) =
-      _$ExperimentCopyWithImpl<$Res, Experiment>;
+abstract class $NewExperimentCopyWith<$Res> {
+  factory $NewExperimentCopyWith(
+          NewExperiment value, $Res Function(NewExperiment) then) =
+      _$NewExperimentCopyWithImpl<$Res, NewExperiment>;
   @useResult
   $Res call(
       {@JsonSerializable(explicitToJson: true) String name,
@@ -50,9 +50,9 @@ abstract class $ExperimentCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ExperimentCopyWithImpl<$Res, $Val extends Experiment>
-    implements $ExperimentCopyWith<$Res> {
-  _$ExperimentCopyWithImpl(this._value, this._then);
+class _$NewExperimentCopyWithImpl<$Res, $Val extends NewExperiment>
+    implements $NewExperimentCopyWith<$Res> {
+  _$NewExperimentCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -99,11 +99,11 @@ class _$ExperimentCopyWithImpl<$Res, $Val extends Experiment>
 }
 
 /// @nodoc
-abstract class _$$_ExperimentCopyWith<$Res>
-    implements $ExperimentCopyWith<$Res> {
-  factory _$$_ExperimentCopyWith(
-          _$_Experiment value, $Res Function(_$_Experiment) then) =
-      __$$_ExperimentCopyWithImpl<$Res>;
+abstract class _$$_NewExperimentCopyWith<$Res>
+    implements $NewExperimentCopyWith<$Res> {
+  factory _$$_NewExperimentCopyWith(
+          _$_NewExperiment value, $Res Function(_$_NewExperiment) then) =
+      __$$_NewExperimentCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -116,11 +116,11 @@ abstract class _$$_ExperimentCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExperimentCopyWithImpl<$Res>
-    extends _$ExperimentCopyWithImpl<$Res, _$_Experiment>
-    implements _$$_ExperimentCopyWith<$Res> {
-  __$$_ExperimentCopyWithImpl(
-      _$_Experiment _value, $Res Function(_$_Experiment) _then)
+class __$$_NewExperimentCopyWithImpl<$Res>
+    extends _$NewExperimentCopyWithImpl<$Res, _$_NewExperiment>
+    implements _$$_NewExperimentCopyWith<$Res> {
+  __$$_NewExperimentCopyWithImpl(
+      _$_NewExperiment _value, $Res Function(_$_NewExperiment) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -133,7 +133,7 @@ class __$$_ExperimentCopyWithImpl<$Res>
     Object? frequencyRange = null,
     Object? lengthOfWords = null,
   }) {
-    return _then(_$_Experiment(
+    return _then(_$_NewExperiment(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -164,8 +164,8 @@ class __$$_ExperimentCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Experiment implements _Experiment {
-  const _$_Experiment(
+class _$_NewExperiment implements _NewExperiment {
+  const _$_NewExperiment(
       {@JsonSerializable(explicitToJson: true) required this.name,
       required this.description,
       required this.numberOfWords,
@@ -175,8 +175,8 @@ class _$_Experiment implements _Experiment {
       : _frequencyRange = frequencyRange,
         _lengthOfWords = lengthOfWords;
 
-  factory _$_Experiment.fromJson(Map<String, dynamic> json) =>
-      _$$_ExperimentFromJson(json);
+  factory _$_NewExperiment.fromJson(Map<String, dynamic> json) =>
+      _$$_NewExperimentFromJson(json);
 
   @override
   @JsonSerializable(explicitToJson: true)
@@ -205,14 +205,14 @@ class _$_Experiment implements _Experiment {
 
   @override
   String toString() {
-    return 'Experiment(name: $name, description: $description, numberOfWords: $numberOfWords, numberOfSecondsPerWord: $numberOfSecondsPerWord, frequencyRange: $frequencyRange, lengthOfWords: $lengthOfWords)';
+    return 'NewExperiment(name: $name, description: $description, numberOfWords: $numberOfWords, numberOfSecondsPerWord: $numberOfSecondsPerWord, frequencyRange: $frequencyRange, lengthOfWords: $lengthOfWords)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Experiment &&
+            other is _$_NewExperiment &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -240,28 +240,28 @@ class _$_Experiment implements _Experiment {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExperimentCopyWith<_$_Experiment> get copyWith =>
-      __$$_ExperimentCopyWithImpl<_$_Experiment>(this, _$identity);
+  _$$_NewExperimentCopyWith<_$_NewExperiment> get copyWith =>
+      __$$_NewExperimentCopyWithImpl<_$_NewExperiment>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExperimentToJson(
+    return _$$_NewExperimentToJson(
       this,
     );
   }
 }
 
-abstract class _Experiment implements Experiment {
-  const factory _Experiment(
+abstract class _NewExperiment implements NewExperiment {
+  const factory _NewExperiment(
       {@JsonSerializable(explicitToJson: true) required final String name,
       required final String description,
       required final int numberOfWords,
       required final double numberOfSecondsPerWord,
       required final List<int> frequencyRange,
-      required final List<int> lengthOfWords}) = _$_Experiment;
+      required final List<int> lengthOfWords}) = _$_NewExperiment;
 
-  factory _Experiment.fromJson(Map<String, dynamic> json) =
-      _$_Experiment.fromJson;
+  factory _NewExperiment.fromJson(Map<String, dynamic> json) =
+      _$_NewExperiment.fromJson;
 
   @override
   @JsonSerializable(explicitToJson: true)
@@ -278,6 +278,6 @@ abstract class _Experiment implements Experiment {
   List<int> get lengthOfWords;
   @override
   @JsonKey(ignore: true)
-  _$$_ExperimentCopyWith<_$_Experiment> get copyWith =>
+  _$$_NewExperimentCopyWith<_$_NewExperiment> get copyWith =>
       throw _privateConstructorUsedError;
 }

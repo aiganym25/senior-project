@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:senior_project/pages/login.dart';
+import 'package:provider/provider.dart';
 import 'package:senior_project/pages/profile/my_request.dart';
-import 'package:senior_project/pages/sign_up.dart';
+import 'package:senior_project/pages/providers/experiment_mv.dart';
+import 'package:senior_project/pages/providers/request_mv.dart';
 import 'package:senior_project/pages/profile/taken_exp.dart';
 import 'package:senior_project/pages/profile/created_experiment.dart';
 import 'package:senior_project/widgets/container_widget.dart';
@@ -16,7 +16,17 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  List<Widget> widgets = [const CreatedExperiment(), const MyRequests(), const TakenExperiments()];
+  List<Widget> widgets = [
+    ChangeNotifierProvider<ExperimentParametersMV>(
+      create: (_) => ExperimentParametersMV(),
+      child: CreatedExperiment(id: 1, title: 'Experiment 1'),
+    ),
+    ChangeNotifierProvider<RequestedExperimentsMV>(
+      create: (_) => RequestedExperimentsMV(),
+      child: const MyRequests(),
+    ),
+    const TakenExperiments()
+  ];
   List<String> titles = [
     'My created experiments',
     'Requests to my experiments',
