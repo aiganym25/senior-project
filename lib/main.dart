@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:senior_project/pages/authentication/auth_model.dart';
+import 'package:senior_project/pages/authentication/authentication_page.dart';
 import 'package:senior_project/pages/feed-home/experiment/animated_cards.dart';
 import 'package:senior_project/pages/feed-home/experiment/fill_in_page.dart';
-import 'package:senior_project/pages/main_page.dart';
 import 'package:senior_project/pages/profile/created_experiment.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
 
@@ -24,12 +25,14 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MainPage(),
+          home: const AuthenticationPage(),
           routes: {
-            '/home_page': (context) => const MainPage(),
+            '/home_page': (context) => AuthProvider(
+                model: AuthModel(), child: const AuthenticationPage()),
             '/body_screen': (context) => const AnimatedCardsPage(),
             '/fillIn': (context) => const FillInWords(),
-            '/my_created_experiments': (context) => CreatedExperiment(id: 1, title: 'Experiment 1'),
+            '/my_created_experiments': (context) =>
+                CreatedExperiment(id: 1, title: 'Experiment 1'),
           },
           initialRoute: '/home_page',
         ),

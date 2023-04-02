@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:senior_project/mv/get_experiment.dart';
+import 'package:senior_project/models/get_experiment.dart';
 
 const String baseURL = 'https://my-spring-app-sp.herokuapp.com/api/v1/';
 
@@ -33,4 +33,22 @@ class BaseClient {
       throw Exception('Failed to load expriments');
     }
   }
+
+  // Future<Response> registerUser(String url) async{
+  //   Response response = await get(
+  //     url, 
+  //     cont
+  //   )
+
+  // }
+
+  // Future<Response> login() async {
+  //   }
+  //   Future<Response> getUserProfileData() async {
+  //       //GET USER PROFILE DATA
+  //   }
+
+  //   Future<Response> logout() async {
+  //       //IMPLEMENT USER LOGOUT
+  //    }
 }

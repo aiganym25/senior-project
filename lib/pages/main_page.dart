@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:senior_project/pages/profile/profile.dart';
-import 'package:senior_project/pages/feed.dart';
+import 'package:senior_project/pages/feed-home/feed.dart';
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 

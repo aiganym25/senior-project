@@ -5,10 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:senior_project/pages/profile/created_experiment.dart';
 import 'package:senior_project/repo/base_client.dart';
-import 'package:senior_project/mv/experiment.dart';
+import 'package:senior_project/models/experiment.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/widgets/buttons/button.dart';
-import 'package:senior_project/mv/get_experiment.dart';
+import 'package:senior_project/models/get_experiment.dart';
 
 class NewExperimentPage extends StatefulWidget {
   const NewExperimentPage({Key? key}) : super(key: key);

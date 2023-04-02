@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:senior_project/mv/get_experiment.dart';
+import 'package:senior_project/models/get_experiment.dart';
 import 'package:senior_project/pages/profile/view_result.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/widgets/buttons/button.dart';
