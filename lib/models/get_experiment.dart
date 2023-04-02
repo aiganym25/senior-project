@@ -4,31 +4,55 @@ part 'get_experiment.freezed.dart';
 part 'get_experiment.g.dart';
 
 @freezed
-class GetExperiment with _$GetExperiment {
-  factory GetExperiment({
-    required Experiment data,
-    required String message,
-    required int status,
-  }) = _GetExperiment;
+abstract class MyCreatedExperiments with _$MyCreatedExperiments {
+  const factory MyCreatedExperiments({
+    required int experimentId,
+    required String experimentName,
+    required String description,
+    required double betweenWordTime,
+    required double wordTime,
+    required bool isJoinable,
+    required List<String> words,
+    required int participantCount,
+    required List<int> overallResults,
+    required int experimentType,
+    required UserModel creator,
+  }) = _MyCreatedExperiments;
 
-  factory GetExperiment.fromJson(Map<String, dynamic> json) =>
-      _$GetExperimentFromJson(json);
+  factory MyCreatedExperiments.fromJson(Map<String, dynamic> json) =>
+      _$MyCreatedExperimentsFromJson(json);
 }
 
 @freezed
-class Experiment with _$Experiment {
-  factory Experiment({
-    required int experimentId,
-    required String name,
-    required String description,
-    required String createdBy,
-    required int numberOfWords,
-    required List<int> lengthOfWords,
-    required dynamic frequencyRange,
-    required double numberOfSecondsPerWord,
-    required List<String> words,
-  }) = _Experiment;
+abstract class UserModel with _$UserModel {
+  const factory UserModel({
+    required int userId,
+    required String userEmail,
+    required String firstName,
+    required String lastName,
+    required String password,
+    required int age,
+    required String? gender,
+    required String? degree,
+    required String role,
+    required bool enabled,
+    required List<AuthorityModel> authorities,
+    required String username,
+    required bool accountNonExpired,
+    required bool accountNonLocked,
+    required bool credentialsNonExpired,
+  }) = _UserModel;
 
-  factory Experiment.fromJson(Map<String, dynamic> json) =>
-      _$ExperimentFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
+}
+
+@freezed
+abstract class AuthorityModel with _$AuthorityModel {
+  const factory AuthorityModel({
+    required String authority,
+  }) = _AuthorityModel;
+
+  factory AuthorityModel.fromJson(Map<String, dynamic> json) =>
+      _$AuthorityModelFromJson(json);
 }

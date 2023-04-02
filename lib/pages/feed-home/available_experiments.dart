@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
 import 'package:senior_project/widgets/cards/joinable_card.dart';
+import 'package:senior_project/repo/api_client.dart';
+
 
 class AvailableExperiments extends StatefulWidget {
   const AvailableExperiments({Key? key}) : super(key: key);
@@ -25,10 +27,13 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
     _controller.dispose();
     super.dispose();
   }
+  final _apiClient = ApiClient();
 
   @override
   Widget build(BuildContext context) {
     bool isShow = context.select((RequestedExperimentsMV mv) => mv.isShow);
+
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
@@ -59,7 +64,7 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
                       icon: const Icon(Icons.search, size: 30),
                       onPressed: () {
                         print(isShow);
-
+                        _apiClient.getToken();
                         Provider.of<RequestedExperimentsMV>(context,
                                 listen: false)
                             .changeShowStatus();

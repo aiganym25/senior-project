@@ -8,25 +8,22 @@ part of 'experiment.dart';
 
 _$_NewExperiment _$$_NewExperimentFromJson(Map<String, dynamic> json) =>
     _$_NewExperiment(
-      name: json['name'] as String,
+      experimentName: json['experimentName'] as String,
+      words: (json['words'] as List<dynamic>).map((e) => e as String).toList(),
       description: json['description'] as String,
-      numberOfWords: json['numberOfWords'] as int,
-      numberOfSecondsPerWord:
-          (json['numberOfSecondsPerWord'] as num).toDouble(),
-      frequencyRange: (json['frequencyRange'] as List<dynamic>)
-          .map((e) => e as int)
-          .toList(),
-      lengthOfWords: (json['lengthOfWords'] as List<dynamic>)
-          .map((e) => e as int)
-          .toList(),
+      experimentType: json['experimentType'] as String,
+      betweenWordTime: (json['betweenWordTime'] as num).toDouble(),
+      wordTime: (json['wordTime'] as num).toDouble(),
+      isJoinable: json['isJoinable'] as String,
     );
 
 Map<String, dynamic> _$$_NewExperimentToJson(_$_NewExperiment instance) =>
     <String, dynamic>{
-      'name': instance.name,
+      'experimentName': instance.experimentName,
+      'words': instance.words,
       'description': instance.description,
-      'numberOfWords': instance.numberOfWords,
-      'numberOfSecondsPerWord': instance.numberOfSecondsPerWord,
-      'frequencyRange': instance.frequencyRange,
-      'lengthOfWords': instance.lengthOfWords,
+      'experimentType': instance.experimentType,
+      'betweenWordTime': instance.betweenWordTime,
+      'wordTime': instance.wordTime,
+      'isJoinable': instance.isJoinable,
     };

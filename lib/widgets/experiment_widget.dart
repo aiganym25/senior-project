@@ -11,8 +11,8 @@ class ExperimentWidget extends StatelessWidget {
     return 
     Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        margin: const EdgeInsets.only(bottom: 20),
-        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
+        width: MediaQuery.of(context).size.width * 0.1,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: const [

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:senior_project/pages/authentication/auth_model.dart';
 import 'package:senior_project/widgets/buttons/btn_with_icons.dart';
-import 'package:senior_project/pages/authentication/login.dart';
-import 'package:senior_project/pages/authentication/sign_up.dart';
+import 'package:senior_project/pages/authentication/login/login.dart';
+import 'package:senior_project/pages/authentication/sign_up/sign_up.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({Key? key}) : super(key: key);
@@ -67,8 +67,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                builder: (BuildContext context) =>
-                                    const SignUp(),
+                                builder: (BuildContext context) => AuthProvider(
+                                    model: AuthModel(), child: const SignUp()),
                               ),
                             );
                           },

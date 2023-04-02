@@ -7,7 +7,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final model = AuthProvider.read(context)?.model;
 
     return Container(
@@ -146,7 +145,10 @@ class _AuthButtonWidget extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: 20));
     return GestureDetector(
-      onTap: () => model?.auth(context),
+      onTap: () => {
+        model?.auth(context),
+        // print(model?.loginTextController.text),
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 8,

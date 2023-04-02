@@ -7,12 +7,13 @@ part 'experiment.g.dart';
 class NewExperiment with _$NewExperiment {
   const factory NewExperiment({
     @JsonSerializable(explicitToJson: true)
-    required String name,
+    required String experimentName,
+    required List<String> words,
     required String description,
-    required int numberOfWords,
-    required double numberOfSecondsPerWord,
-    required List<int> frequencyRange,
-    required List<int> lengthOfWords,
+    required String experimentType,
+    required double betweenWordTime,
+    required double wordTime,
+    required String isJoinable
   }) = _NewExperiment;
 
   factory NewExperiment.fromJson(Map<String, Object?> json)

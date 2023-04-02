@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:senior_project/pages/authentication/auth_model.dart';
 import 'package:senior_project/widgets/already_have_acc.dart';
-import 'package:senior_project/pages/authentication/login.dart';
+import 'package:senior_project/pages/authentication/login/login.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class SignUp extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               width: double.infinity,
-              height: 600,
+              height: 650,
               margin: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
@@ -67,6 +68,12 @@ class SignUp extends StatelessWidget {
                   _buildInputField(
                     hintText: 'Gender',
                     controller: model?.genderController,
+                    keyboardType: TextInputType.name,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildInputField(
+                    hintText: 'Degree',
+                    controller: model?.degreeController,
                     keyboardType: TextInputType.name,
                   ),
                   const SizedBox(height: 16),
@@ -150,7 +157,9 @@ class CreateAccButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = AuthProvider.read(context)?.model;
     return GestureDetector(
-      onTap: () => {model?.register(context), print('tap')},
+      onTap: () => {
+        model?.register(context),
+      },
       child: Container(
         height: 40,
         margin: const EdgeInsets.symmetric(horizontal: 16),

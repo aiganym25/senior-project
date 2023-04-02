@@ -1,10 +1,46 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:senior_project/domain/data_providers/session_data_providers.dart';
+import 'package:http/http.dart' as http;
 
 class ApiClient {
-
-  final _client = HttpClient();
+  final client = HttpClient();
   static const _host = 'https://demo409.herokuapp.com';
+  // final Map<String, String> _requestHeaders = {
+  //   "Accept": "application/json",
+  //   "Content-Type": "application/json"
+  // };
+
+  Future<dynamic> createExperiment(Map<String, dynamic> object) async {
+    final url = _makeUri('/create-experiment');
+    var token = await SessionDataProvider().getSessionId();
+    var body = jsonEncode(object);
+    // print(body);
+    try {
+      var response = await http.post(url, body: body, headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
+      });
+      // print(response.statusCode);
+      return response;
+    } catch (er) {
+      print(er);
+    }
+  }
+
+  Future<dynamic> getMyCreatedExperiments() async {
+    final url = _makeUri('/my-created-experiments');
+    var token = await SessionDataProvider().getSessionId();
+
+    var response = await http.get(url, headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    });
+    // print(response.body);
+    return response;
+  }
 
   Future<String> login(
       {required String email, required String password}) async {
@@ -20,20 +56,17 @@ class ApiClient {
       required String age,
       required String gender,
       required String degree}) async {
-    final token =
-        await _signUp(email, firstName, lastName, password, age, gender, degree);
+    final token = await _signUp(
+        email, firstName, lastName, password, age, gender, degree);
     return token;
   }
 
   Future<String> _loginUser(String email, String password) async {
     final url = _makeUri('/auth/authenticate');
 
-    final parameters = <String, dynamic>{
-      "email": email,
-      "password": password
-    };
+    final parameters = <String, dynamic>{"email": email, "password": password};
 
-    final request = await _client.postUrl(url);
+    final request = await client.postUrl(url);
     request.headers.contentType = ContentType.json;
     request.write(jsonEncode(parameters));
 
@@ -47,10 +80,12 @@ class ApiClient {
 
     final token = json["token"] as String;
     print(token);
+
     return token;
   }
 
-  Future<String> _signUp( email, firstName, lastName, password, age, gender, degree) async {
+  Future<String> _signUp(String email, String firstName, String lastName,
+      String password, String age, String gender, String degree) async {
     final url = _makeUri('/auth/register');
     final parameters = <String, dynamic>{
       "userEmail": email,
@@ -62,14 +97,11 @@ class ApiClient {
       "degree": degree
     };
 
-    print(parameters);
-    final request = await _client.postUrl(url);
+    final request = await client.postUrl(url);
     request.headers.contentType = ContentType.json;
     request.write(jsonEncode(parameters));
 
     final response = await request.close();
-    print(response);
-
     final json = await response
         .transform(utf8.decoder)
         .toList()
@@ -77,90 +109,44 @@ class ApiClient {
         .then((v) => jsonDecode(v) as Map<String, dynamic>);
 
     final token = json["token"] as String;
-    print(token);
     return token;
   }
 
-
-
   Uri _makeUri(String path, [Map<String, dynamic>? parameters]) {
     final uri = Uri.parse('$_host$path');
+
     if (parameters != null) {
+      print(uri);
       return uri.replace(queryParameters: parameters);
     } else {
       return uri;
     }
   }
 
-  // Future<String> _makeToken() async {
-  //   final url = _makeUri('', {'api_key': _apiKey});
-  //   final request = await _client.getUrl(url); // send request
-  //   final response = await request.close(); // get response
-  //   final json = await response
-  //       .transform(utf8.decoder)
-  //       .toList()
-  //       .then((value) => value.join())
-  //       .then((v) => jsonDecode(v) as Map<String, dynamic>);
+  Future<String> getToken() async {
+    final url = _makeUri('/demo-controller');
+    final request = await client.getUrl(url);
 
-  //   final token = json["request_token"] as String;
-  //   return token;
-  // }
+    var token = await SessionDataProvider().getSessionId();
+    print('printing');
+    print(token);
+    // Map<String, String> headers = {
+    //   "Accept": "application/json",
+    //   "Content-Type": "application/json",
+    //   "Authorization": "Bearer $token"
+    // };
 
-  Future<String> _getToken(String token) async {
-    final url = _makeUri('demo-controller');
-    final request = await _client.getUrl(url); // send request
-    // request.add();
-    final response = await request.close(); // get response
-    final json = await response
-        .transform(utf8.decoder)
-        .toList()
-        .then((value) => value.join())
-        .then((v) => jsonDecode(v) as Map<String, dynamic>);
+    request.headers.add('Content-Type', 'application/json; charset=UTF-8');
+    request.headers.add('Accept', 'application/json');
+    request.headers.add('Authorization', 'Bearer $token');
 
-    final token = json["token"] as String;
-    return token;
-  }
-
-  // Future<String> _validateUser(
-  //     String email, String password, String requestToken) async {
-  //   final url = Uri.parse('');
-  //   final parameters = <String, dynamic>{
-  //     'email': email,
-  //     'password': password,
-  //     'request_token': requestToken
-  //   };
-
-  //   final request = await _client.postUrl(url);
-  //   request.headers.contentType = ContentType.json;
-  //   // body of the request
-  //   request.write(jsonEncode(parameters));
-  //   final response = await request.close();
-  //   final json = await response
-  //       .transform(utf8.decoder)
-  //       .toList()
-  //       .then((value) => value.join())
-  //       .then((v) => jsonDecode(v) as Map<String, dynamic>);
-
-  //   final token = json["request_token"] as String;
-  //   return token;
-  // }
-
-  Future<String> _makeSession(String requestToken) async {
-    final url = Uri.parse('');
-    final parameters = <String, dynamic>{'request_token': requestToken};
-
-    final request = await _client.postUrl(url);
-    request.headers.contentType = ContentType.json;
-    // body of the request
-    request.write(jsonEncode(parameters));
     final response = await request.close();
     final json = await response
         .transform(utf8.decoder)
         .toList()
         .then((value) => value.join())
         .then((v) => jsonDecode(v) as Map<String, dynamic>);
-
-    final sessionId = json["session_id"] as String;
-    return sessionId;
+    print(json);
+    return '';
   }
 }

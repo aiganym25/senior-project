@@ -21,12 +21,13 @@ NewExperiment _$NewExperimentFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$NewExperiment {
   @JsonSerializable(explicitToJson: true)
-  String get name => throw _privateConstructorUsedError;
+  String get experimentName => throw _privateConstructorUsedError;
+  List<String> get words => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  int get numberOfWords => throw _privateConstructorUsedError;
-  double get numberOfSecondsPerWord => throw _privateConstructorUsedError;
-  List<int> get frequencyRange => throw _privateConstructorUsedError;
-  List<int> get lengthOfWords => throw _privateConstructorUsedError;
+  String get experimentType => throw _privateConstructorUsedError;
+  double get betweenWordTime => throw _privateConstructorUsedError;
+  double get wordTime => throw _privateConstructorUsedError;
+  String get isJoinable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,12 +42,13 @@ abstract class $NewExperimentCopyWith<$Res> {
       _$NewExperimentCopyWithImpl<$Res, NewExperiment>;
   @useResult
   $Res call(
-      {@JsonSerializable(explicitToJson: true) String name,
+      {@JsonSerializable(explicitToJson: true) String experimentName,
+      List<String> words,
       String description,
-      int numberOfWords,
-      double numberOfSecondsPerWord,
-      List<int> frequencyRange,
-      List<int> lengthOfWords});
+      String experimentType,
+      double betweenWordTime,
+      double wordTime,
+      String isJoinable});
 }
 
 /// @nodoc
@@ -62,38 +64,43 @@ class _$NewExperimentCopyWithImpl<$Res, $Val extends NewExperiment>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? experimentName = null,
+    Object? words = null,
     Object? description = null,
-    Object? numberOfWords = null,
-    Object? numberOfSecondsPerWord = null,
-    Object? frequencyRange = null,
-    Object? lengthOfWords = null,
+    Object? experimentType = null,
+    Object? betweenWordTime = null,
+    Object? wordTime = null,
+    Object? isJoinable = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      experimentName: null == experimentName
+          ? _value.experimentName
+          : experimentName // ignore: cast_nullable_to_non_nullable
               as String,
+      words: null == words
+          ? _value.words
+          : words // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      numberOfWords: null == numberOfWords
-          ? _value.numberOfWords
-          : numberOfWords // ignore: cast_nullable_to_non_nullable
-              as int,
-      numberOfSecondsPerWord: null == numberOfSecondsPerWord
-          ? _value.numberOfSecondsPerWord
-          : numberOfSecondsPerWord // ignore: cast_nullable_to_non_nullable
+      experimentType: null == experimentType
+          ? _value.experimentType
+          : experimentType // ignore: cast_nullable_to_non_nullable
+              as String,
+      betweenWordTime: null == betweenWordTime
+          ? _value.betweenWordTime
+          : betweenWordTime // ignore: cast_nullable_to_non_nullable
               as double,
-      frequencyRange: null == frequencyRange
-          ? _value.frequencyRange
-          : frequencyRange // ignore: cast_nullable_to_non_nullable
-              as List<int>,
-      lengthOfWords: null == lengthOfWords
-          ? _value.lengthOfWords
-          : lengthOfWords // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+      wordTime: null == wordTime
+          ? _value.wordTime
+          : wordTime // ignore: cast_nullable_to_non_nullable
+              as double,
+      isJoinable: null == isJoinable
+          ? _value.isJoinable
+          : isJoinable // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -107,12 +114,13 @@ abstract class _$$_NewExperimentCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonSerializable(explicitToJson: true) String name,
+      {@JsonSerializable(explicitToJson: true) String experimentName,
+      List<String> words,
       String description,
-      int numberOfWords,
-      double numberOfSecondsPerWord,
-      List<int> frequencyRange,
-      List<int> lengthOfWords});
+      String experimentType,
+      double betweenWordTime,
+      double wordTime,
+      String isJoinable});
 }
 
 /// @nodoc
@@ -126,38 +134,43 @@ class __$$_NewExperimentCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? experimentName = null,
+    Object? words = null,
     Object? description = null,
-    Object? numberOfWords = null,
-    Object? numberOfSecondsPerWord = null,
-    Object? frequencyRange = null,
-    Object? lengthOfWords = null,
+    Object? experimentType = null,
+    Object? betweenWordTime = null,
+    Object? wordTime = null,
+    Object? isJoinable = null,
   }) {
     return _then(_$_NewExperiment(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      experimentName: null == experimentName
+          ? _value.experimentName
+          : experimentName // ignore: cast_nullable_to_non_nullable
               as String,
+      words: null == words
+          ? _value._words
+          : words // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      numberOfWords: null == numberOfWords
-          ? _value.numberOfWords
-          : numberOfWords // ignore: cast_nullable_to_non_nullable
-              as int,
-      numberOfSecondsPerWord: null == numberOfSecondsPerWord
-          ? _value.numberOfSecondsPerWord
-          : numberOfSecondsPerWord // ignore: cast_nullable_to_non_nullable
+      experimentType: null == experimentType
+          ? _value.experimentType
+          : experimentType // ignore: cast_nullable_to_non_nullable
+              as String,
+      betweenWordTime: null == betweenWordTime
+          ? _value.betweenWordTime
+          : betweenWordTime // ignore: cast_nullable_to_non_nullable
               as double,
-      frequencyRange: null == frequencyRange
-          ? _value._frequencyRange
-          : frequencyRange // ignore: cast_nullable_to_non_nullable
-              as List<int>,
-      lengthOfWords: null == lengthOfWords
-          ? _value._lengthOfWords
-          : lengthOfWords // ignore: cast_nullable_to_non_nullable
-              as List<int>,
+      wordTime: null == wordTime
+          ? _value.wordTime
+          : wordTime // ignore: cast_nullable_to_non_nullable
+              as double,
+      isJoinable: null == isJoinable
+          ? _value.isJoinable
+          : isJoinable // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -166,46 +179,43 @@ class __$$_NewExperimentCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_NewExperiment implements _NewExperiment {
   const _$_NewExperiment(
-      {@JsonSerializable(explicitToJson: true) required this.name,
+      {@JsonSerializable(explicitToJson: true) required this.experimentName,
+      required final List<String> words,
       required this.description,
-      required this.numberOfWords,
-      required this.numberOfSecondsPerWord,
-      required final List<int> frequencyRange,
-      required final List<int> lengthOfWords})
-      : _frequencyRange = frequencyRange,
-        _lengthOfWords = lengthOfWords;
+      required this.experimentType,
+      required this.betweenWordTime,
+      required this.wordTime,
+      required this.isJoinable})
+      : _words = words;
 
   factory _$_NewExperiment.fromJson(Map<String, dynamic> json) =>
       _$$_NewExperimentFromJson(json);
 
   @override
   @JsonSerializable(explicitToJson: true)
-  final String name;
+  final String experimentName;
+  final List<String> _words;
+  @override
+  List<String> get words {
+    if (_words is EqualUnmodifiableListView) return _words;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_words);
+  }
+
   @override
   final String description;
   @override
-  final int numberOfWords;
+  final String experimentType;
   @override
-  final double numberOfSecondsPerWord;
-  final List<int> _frequencyRange;
+  final double betweenWordTime;
   @override
-  List<int> get frequencyRange {
-    if (_frequencyRange is EqualUnmodifiableListView) return _frequencyRange;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_frequencyRange);
-  }
-
-  final List<int> _lengthOfWords;
+  final double wordTime;
   @override
-  List<int> get lengthOfWords {
-    if (_lengthOfWords is EqualUnmodifiableListView) return _lengthOfWords;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_lengthOfWords);
-  }
+  final String isJoinable;
 
   @override
   String toString() {
-    return 'NewExperiment(name: $name, description: $description, numberOfWords: $numberOfWords, numberOfSecondsPerWord: $numberOfSecondsPerWord, frequencyRange: $frequencyRange, lengthOfWords: $lengthOfWords)';
+    return 'NewExperiment(experimentName: $experimentName, words: $words, description: $description, experimentType: $experimentType, betweenWordTime: $betweenWordTime, wordTime: $wordTime, isJoinable: $isJoinable)';
   }
 
   @override
@@ -213,29 +223,32 @@ class _$_NewExperiment implements _NewExperiment {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_NewExperiment &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.experimentName, experimentName) ||
+                other.experimentName == experimentName) &&
+            const DeepCollectionEquality().equals(other._words, _words) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.numberOfWords, numberOfWords) ||
-                other.numberOfWords == numberOfWords) &&
-            (identical(other.numberOfSecondsPerWord, numberOfSecondsPerWord) ||
-                other.numberOfSecondsPerWord == numberOfSecondsPerWord) &&
-            const DeepCollectionEquality()
-                .equals(other._frequencyRange, _frequencyRange) &&
-            const DeepCollectionEquality()
-                .equals(other._lengthOfWords, _lengthOfWords));
+            (identical(other.experimentType, experimentType) ||
+                other.experimentType == experimentType) &&
+            (identical(other.betweenWordTime, betweenWordTime) ||
+                other.betweenWordTime == betweenWordTime) &&
+            (identical(other.wordTime, wordTime) ||
+                other.wordTime == wordTime) &&
+            (identical(other.isJoinable, isJoinable) ||
+                other.isJoinable == isJoinable));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      name,
+      experimentName,
+      const DeepCollectionEquality().hash(_words),
       description,
-      numberOfWords,
-      numberOfSecondsPerWord,
-      const DeepCollectionEquality().hash(_frequencyRange),
-      const DeepCollectionEquality().hash(_lengthOfWords));
+      experimentType,
+      betweenWordTime,
+      wordTime,
+      isJoinable);
 
   @JsonKey(ignore: true)
   @override
@@ -253,29 +266,33 @@ class _$_NewExperiment implements _NewExperiment {
 
 abstract class _NewExperiment implements NewExperiment {
   const factory _NewExperiment(
-      {@JsonSerializable(explicitToJson: true) required final String name,
+      {@JsonSerializable(explicitToJson: true)
+          required final String experimentName,
+      required final List<String> words,
       required final String description,
-      required final int numberOfWords,
-      required final double numberOfSecondsPerWord,
-      required final List<int> frequencyRange,
-      required final List<int> lengthOfWords}) = _$_NewExperiment;
+      required final String experimentType,
+      required final double betweenWordTime,
+      required final double wordTime,
+      required final String isJoinable}) = _$_NewExperiment;
 
   factory _NewExperiment.fromJson(Map<String, dynamic> json) =
       _$_NewExperiment.fromJson;
 
   @override
   @JsonSerializable(explicitToJson: true)
-  String get name;
+  String get experimentName;
+  @override
+  List<String> get words;
   @override
   String get description;
   @override
-  int get numberOfWords;
+  String get experimentType;
   @override
-  double get numberOfSecondsPerWord;
+  double get betweenWordTime;
   @override
-  List<int> get frequencyRange;
+  double get wordTime;
   @override
-  List<int> get lengthOfWords;
+  String get isJoinable;
   @override
   @JsonKey(ignore: true)
   _$$_NewExperimentCopyWith<_$_NewExperiment> get copyWith =>

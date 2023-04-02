@@ -33,6 +33,7 @@ class AuthModel extends ChangeNotifier {
     _errorMessage = null;
     _isAuthProgress = true;
     notifyListeners();
+
     String? token;
     try {
       token = await _apiClient.login(email: login, password: password);
@@ -67,6 +68,8 @@ class AuthModel extends ChangeNotifier {
     final age = ageController.text;
     final gender = genderController.text;
     final degree = degreeController.text;
+
+    // print(login);
 
     if (login.isEmpty ||
         password.isEmpty ||
