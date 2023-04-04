@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/domain/data_providers/session_data_providers.dart';
+import 'package:senior_project/domain/session_data_providers.dart';
+import 'package:senior_project/pages/profile/profile.dart';
 import '../../models/experiment.dart';
 import 'package:senior_project/repo/api_client.dart';
 import 'package:http/http.dart' as http;
@@ -13,8 +14,8 @@ class ExperimentParametersMV extends ChangeNotifier {
   final wordsController = TextEditingController();
   String isJoinableExperiment = 'True';
 
-  String _errorMessage = 'sdvsdv';
-  String get errorMessage => _errorMessage;
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
 
   List<String> words = [];
 
@@ -32,33 +33,36 @@ class ExperimentParametersMV extends ChangeNotifier {
         });
   }
 
-  void createExperiment(BuildContext context) async {
+  Future<void> createExperiment(BuildContext context) async {
     final title = titleExperimentController.text;
     final description = descriptionController.text;
-    double betweenWordTime = double.parse(betweenWordTimeController.text);
-    double wordShowTime = double.parse(wordShowTimeController.text);
+    print('in create function');
 
+    var betweenWordTime = 0.0;
+    var wordShowTime = 0.0;
+    if (betweenWordTimeController.text.isNotEmpty) {
+      betweenWordTime = double.parse(betweenWordTimeController.text);
+    }
+    if (wordShowTimeController.text.isNotEmpty) {
+      wordShowTime = double.parse(wordShowTimeController.text);
+    }
+    final inputWords = wordsController.text;
+    if (inputWords.isNotEmpty) {
+      words = inputWords.split(', ').map((word) => word.trim()).toList();
+      notifyListeners();
+    }
     if (title.isEmpty ||
         words.isEmpty ||
         description.isEmpty ||
         betweenWordTimeController.text.isEmpty ||
         wordShowTimeController.text.isEmpty) {
       _errorMessage = 'Please, complete all required fields';
-      print(_errorMessage);
       notifyListeners();
       return;
     }
-    print('dfgdf');
-    print(_errorMessage);
-    _errorMessage = 'Please, complete all required fields';
-    notifyListeners();
 
-    final inputWords = wordsController.text;
-    if (inputWords.isNotEmpty) {
-      words = inputWords.split(', ').map((word) => word.trim()).toList();
-      // print(words);
-      notifyListeners();
-    }
+    _errorMessage = null;
+    notifyListeners();
 
     var newExperiment = NewExperiment(
         experimentName: title,
@@ -72,17 +76,19 @@ class ExperimentParametersMV extends ChangeNotifier {
 
     try {
       var response = await _apiClient.createExperiment(activityData);
-      print(response.body);
     } catch (er) {
       _errorMessage = 'Experiment creation failed, please try again!';
+      print(er);
     }
     if (_errorMessage != null) {
       notifyListeners();
       return;
     }
-    // _errorMessage = null;
-    // notifyListeners();
-
-    Navigator.of(context).pop();
+    // Navigator.of(context).popUntil((route) => route.);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const MyProfile(),
+      ),
+    );
   }
 }

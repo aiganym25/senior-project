@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:senior_project/domain/session_data_providers.dart';
 import 'package:senior_project/models/get_experiment.dart';
 
 const String baseURL = 'https://my-spring-app-sp.herokuapp.com/api/v1/';
@@ -24,6 +25,28 @@ class BaseClient {
     }
   }
 
+  Future<dynamic> getExperimentsByEmail(String email) async {
+    
+    var token = await SessionDataProvider().getSessionId();
+    var url = 'https://demo409.herokuapp.com/experiments-byEmail';
+    // var body = jsonEncode(object);
+    // print(body);
+    try {
+      var response = await http.get(Uri.parse(url), headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token"
+      });
+       //  print(response.body);
+      //  print(response.statusCode);
+      return response.body;
+      //  print(response.body);
+      //  print(response.statusCode);
+    } catch (er) {
+      print(er);
+    }
+  }
+
   // Future<dynamic> getExperiments(String url) async {
   //   final response = await http.get(Uri.parse(url));
 
@@ -36,7 +59,7 @@ class BaseClient {
 
   // Future<Response> registerUser(String url) async{
   //   Response response = await get(
-  //     url, 
+  //     url,
   //     cont
   //   )
 

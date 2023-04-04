@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
+import 'package:senior_project/repo/base_client.dart';
 import 'package:senior_project/widgets/cards/joinable_card.dart';
 import 'package:senior_project/repo/api_client.dart';
 
@@ -52,19 +54,24 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
                     Expanded(
                       child: TextField(
                         controller: _controller,
-                        decoration: const InputDecoration(
-                          
+                        decoration: const InputDecoration(                     
                           hintText: 'Search by email',
                           hintStyle: TextStyle(fontSize: 18),
                           border: InputBorder.none,
                         ),
+                        // onEditingComplete:() {
+                        //   // print(value);
+                        //   _apiClient.getExperimentsByEmail(_controller.text);
+                        // },
                       ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.search, size: 30),
-                      onPressed: () {
-                        print(isShow);
-                        _apiClient.getToken();
+                      onPressed: () async{
+                        // print(_controller.text);
+                        _apiClient.getExperimentsByEmail(_controller.text);
+                      //  var response = await BaseClient().getExperimentsByEmail(_controller.text);
+                      //  print(jsonDecode(response));
                         Provider.of<RequestedExperimentsMV>(context,
                                 listen: false)
                             .changeShowStatus();

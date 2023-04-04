@@ -66,6 +66,7 @@ class _NewExperimentPageState extends State<NewExperimentPage> {
                     onTap: () async {
                       print('new exp is creating');
                       print(model.errorMessage);
+                      print(model.descriptionController.text);
                       model.createExperiment(context);
                     },
                     child: ButtonWidget(txt: 'Create')),
@@ -192,7 +193,7 @@ class _ErrorMessageWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20, top: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Text(errorMessage,
           style: const TextStyle(fontSize: 17, color: Colors.red)),
     );

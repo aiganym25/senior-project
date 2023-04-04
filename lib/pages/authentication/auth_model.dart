@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/domain/data_providers/session_data_providers.dart';
+import 'package:senior_project/domain/session_data_providers.dart';
 import 'package:senior_project/pages/main_page.dart';
 import 'package:senior_project/repo/api_client.dart';
 
@@ -27,6 +27,7 @@ class AuthModel extends ChangeNotifier {
     final password = passwordTextController.text;
     if (login.isEmpty || password.isEmpty) {
       _errorMessage = 'Fill the email and password';
+      print('something');
       notifyListeners();
       return;
     }

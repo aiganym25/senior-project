@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:senior_project/domain/data_providers/session_data_providers.dart';
+import 'package:senior_project/domain/session_data_providers.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
@@ -10,6 +10,34 @@ class ApiClient {
   //   "Accept": "application/json",
   //   "Content-Type": "application/json"
   // };
+
+  Future<dynamic> getExperimentsByEmail(String email) async {
+    final url = _makeUri('/experiments-byEmail');
+    final parameters = <String, dynamic>{"email": email};
+    var token = await SessionDataProvider().getSessionId();
+
+    final request = await client.getUrl(url);
+    print(request);
+
+    // request.headers.add('Content-Type', 'application/json; charset=UTF-8');
+    // request.headers.add('Accept', 'application/json');
+    // request.headers.contentLength = utf8.encode(jsonEncode(parameters)).length;
+
+
+    request.headers.add('Authorization', 'Bearer $token');
+
+    request.write(jsonEncode(parameters));
+
+    final response = await request.close();
+    print('printing');
+    print(response.statusCode);
+    final json = await response
+        .transform(utf8.decoder)
+        .toList()
+        .then((value) => value.join())
+        .then((v) => jsonDecode(v) as Map<String, dynamic>);
+    print(json);
+  }
 
   Future<dynamic> createExperiment(Map<String, dynamic> object) async {
     final url = _makeUri('/create-experiment');
@@ -128,8 +156,6 @@ class ApiClient {
     final request = await client.getUrl(url);
 
     var token = await SessionDataProvider().getSessionId();
-    print('printing');
-    print(token);
     // Map<String, String> headers = {
     //   "Accept": "application/json",
     //   "Content-Type": "application/json",
@@ -146,7 +172,7 @@ class ApiClient {
         .toList()
         .then((value) => value.join())
         .then((v) => jsonDecode(v) as Map<String, dynamic>);
-    print(json);
-    return '';
+    // print(json);
+    return json["token"];
   }
 }
