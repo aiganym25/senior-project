@@ -68,7 +68,6 @@ class ExperimentParametersMV extends ChangeNotifier {
         experimentName: title,
         words: words,
         description: description,
-        experimentType: '1',
         betweenWordTime: betweenWordTime,
         wordTime: wordShowTime,
         isJoinable: isJoinableExperiment);

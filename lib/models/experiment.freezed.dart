@@ -24,7 +24,6 @@ mixin _$NewExperiment {
   String get experimentName => throw _privateConstructorUsedError;
   List<String> get words => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String get experimentType => throw _privateConstructorUsedError;
   double get betweenWordTime => throw _privateConstructorUsedError;
   double get wordTime => throw _privateConstructorUsedError;
   String get isJoinable => throw _privateConstructorUsedError;
@@ -45,7 +44,6 @@ abstract class $NewExperimentCopyWith<$Res> {
       {@JsonSerializable(explicitToJson: true) String experimentName,
       List<String> words,
       String description,
-      String experimentType,
       double betweenWordTime,
       double wordTime,
       String isJoinable});
@@ -67,7 +65,6 @@ class _$NewExperimentCopyWithImpl<$Res, $Val extends NewExperiment>
     Object? experimentName = null,
     Object? words = null,
     Object? description = null,
-    Object? experimentType = null,
     Object? betweenWordTime = null,
     Object? wordTime = null,
     Object? isJoinable = null,
@@ -84,10 +81,6 @@ class _$NewExperimentCopyWithImpl<$Res, $Val extends NewExperiment>
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      experimentType: null == experimentType
-          ? _value.experimentType
-          : experimentType // ignore: cast_nullable_to_non_nullable
               as String,
       betweenWordTime: null == betweenWordTime
           ? _value.betweenWordTime
@@ -117,7 +110,6 @@ abstract class _$$_NewExperimentCopyWith<$Res>
       {@JsonSerializable(explicitToJson: true) String experimentName,
       List<String> words,
       String description,
-      String experimentType,
       double betweenWordTime,
       double wordTime,
       String isJoinable});
@@ -137,7 +129,6 @@ class __$$_NewExperimentCopyWithImpl<$Res>
     Object? experimentName = null,
     Object? words = null,
     Object? description = null,
-    Object? experimentType = null,
     Object? betweenWordTime = null,
     Object? wordTime = null,
     Object? isJoinable = null,
@@ -154,10 +145,6 @@ class __$$_NewExperimentCopyWithImpl<$Res>
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      experimentType: null == experimentType
-          ? _value.experimentType
-          : experimentType // ignore: cast_nullable_to_non_nullable
               as String,
       betweenWordTime: null == betweenWordTime
           ? _value.betweenWordTime
@@ -182,7 +169,6 @@ class _$_NewExperiment implements _NewExperiment {
       {@JsonSerializable(explicitToJson: true) required this.experimentName,
       required final List<String> words,
       required this.description,
-      required this.experimentType,
       required this.betweenWordTime,
       required this.wordTime,
       required this.isJoinable})
@@ -205,8 +191,6 @@ class _$_NewExperiment implements _NewExperiment {
   @override
   final String description;
   @override
-  final String experimentType;
-  @override
   final double betweenWordTime;
   @override
   final double wordTime;
@@ -215,7 +199,7 @@ class _$_NewExperiment implements _NewExperiment {
 
   @override
   String toString() {
-    return 'NewExperiment(experimentName: $experimentName, words: $words, description: $description, experimentType: $experimentType, betweenWordTime: $betweenWordTime, wordTime: $wordTime, isJoinable: $isJoinable)';
+    return 'NewExperiment(experimentName: $experimentName, words: $words, description: $description, betweenWordTime: $betweenWordTime, wordTime: $wordTime, isJoinable: $isJoinable)';
   }
 
   @override
@@ -228,8 +212,6 @@ class _$_NewExperiment implements _NewExperiment {
             const DeepCollectionEquality().equals(other._words, _words) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            (identical(other.experimentType, experimentType) ||
-                other.experimentType == experimentType) &&
             (identical(other.betweenWordTime, betweenWordTime) ||
                 other.betweenWordTime == betweenWordTime) &&
             (identical(other.wordTime, wordTime) ||
@@ -245,7 +227,6 @@ class _$_NewExperiment implements _NewExperiment {
       experimentName,
       const DeepCollectionEquality().hash(_words),
       description,
-      experimentType,
       betweenWordTime,
       wordTime,
       isJoinable);
@@ -270,7 +251,6 @@ abstract class _NewExperiment implements NewExperiment {
           required final String experimentName,
       required final List<String> words,
       required final String description,
-      required final String experimentType,
       required final double betweenWordTime,
       required final double wordTime,
       required final String isJoinable}) = _$_NewExperiment;
@@ -285,8 +265,6 @@ abstract class _NewExperiment implements NewExperiment {
   List<String> get words;
   @override
   String get description;
-  @override
-  String get experimentType;
   @override
   double get betweenWordTime;
   @override

@@ -10,7 +10,6 @@ class NewExperiment with _$NewExperiment {
     required String experimentName,
     required List<String> words,
     required String description,
-    required String experimentType,
     required double betweenWordTime,
     required double wordTime,
     required String isJoinable
