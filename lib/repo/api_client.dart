@@ -5,15 +5,15 @@ import 'package:http/http.dart' as http;
 
 class ApiClient {
   final client = HttpClient();
-  static const _host = 'https://demo409.herokuapp.com';
+  static const _host = 'https://my-spring-app-sp.herokuapp.com';
   // final Map<String, String> _requestHeaders = {
   //   "Accept": "application/json",
   //   "Content-Type": "application/json"
   // };
 
   Future<dynamic> getExperimentsByEmail(String email) async {
-    final url = _makeUri('/experiments-byEmail');
-    final parameters = <String, dynamic>{"email": email};
+    final url = _makeUri('/experiments-byEmail/${email}');
+    // final parameters = <String, dynamic>{"email": email};
     var token = await SessionDataProvider().getSessionId();
 
     final request = await client.getUrl(url);
@@ -26,11 +26,12 @@ class ApiClient {
 
     request.headers.add('Authorization', 'Bearer $token');
 
-    request.write(jsonEncode(parameters));
+    // request.write(jsonEncode(parameters));
 
     final response = await request.close();
     print('printing');
     print(response.statusCode);
+    print(response);
     final json = await response
         .transform(utf8.decoder)
         .toList()

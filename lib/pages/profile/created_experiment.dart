@@ -38,7 +38,7 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                 fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black),
           ),
         ),
-        body: SafeArea(
+        body: SafeArea( 
           child: FutureBuilder(
               future: model.getMyCreatedexperiments(),
               builder: (BuildContext context,

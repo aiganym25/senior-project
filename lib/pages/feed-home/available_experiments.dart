@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
 import 'package:senior_project/repo/base_client.dart';
 import 'package:senior_project/widgets/cards/joinable_card.dart';
 import 'package:senior_project/repo/api_client.dart';
-
+import 'package:http/http.dart' as http;
 
 class AvailableExperiments extends StatefulWidget {
   const AvailableExperiments({Key? key}) : super(key: key);
@@ -29,13 +30,14 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
     _controller.dispose();
     super.dispose();
   }
+
   final _apiClient = ApiClient();
 
   @override
   Widget build(BuildContext context) {
     bool isShow = context.select((RequestedExperimentsMV mv) => mv.isShow);
 
-
+    final model = Provider.of<ExperimentParametersMV>(context);
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
@@ -54,7 +56,7 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
                     Expanded(
                       child: TextField(
                         controller: _controller,
-                        decoration: const InputDecoration(                     
+                        decoration: const InputDecoration(
                           hintText: 'Search by email',
                           hintStyle: TextStyle(fontSize: 18),
                           border: InputBorder.none,
@@ -67,11 +69,11 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.search, size: 30),
-                      onPressed: () async{
+                      onPressed: () async {
                         // print(_controller.text);
                         _apiClient.getExperimentsByEmail(_controller.text);
-                      //  var response = await BaseClient().getExperimentsByEmail(_controller.text);
-                      //  print(jsonDecode(response));
+                        //  var response = await BaseClient().getExperimentsByEmail(_controller.text);
+                        //  print(jsonDecode(response));
                         Provider.of<RequestedExperimentsMV>(context,
                                 listen: false)
                             .changeShowStatus();
@@ -84,6 +86,32 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
               const SizedBox(
                 height: 32,
               ),
+              // FutureBuilder(
+              //     future: model.getMyCreatedexperiments(),
+              //     builder: (BuildContext context,
+              //         AsyncSnapshot<http.Response> snapshot) {
+              //       var experiments = jsonDecode(snapshot.data!.body);
+              //       return Column(
+              //         children: [
+              //           const SizedBox(
+              //             height: 32,
+              //           ),
+              //           ListView.builder(
+              //             physics: const NeverScrollableScrollPhysics(),
+              //             shrinkWrap: true,
+              //             itemCount: experiments.length,
+              //             itemBuilder: (context, index) {
+              //               var experiment = MyCreatedExperiments.fromJson(
+              //                   experiments[index]);
+              //               return ExperimentWidget(
+              //                 title: experiment.experimentName,
+              //                 description: experiment.description,
+              //               );
+              //             },
+              //           )
+              //         ],
+              //       );
+              //     }),
               isShow == true
                   ? ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
