@@ -25,7 +25,7 @@ class ExperimentParametersMV extends ChangeNotifier {
     var token = await SessionDataProvider().getSessionId();
     _apiClient.getMyCreatedExperiments();
     return http.get(
-        Uri.parse('https://demo409.herokuapp.com/my-created-experiments'),
+        Uri.parse('https://my-spring-app-sp.herokuapp.com/my-created-experiments'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",

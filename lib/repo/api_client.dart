@@ -41,7 +41,7 @@ class ApiClient {
   }
 
   Future<dynamic> createExperiment(Map<String, dynamic> object) async {
-    final url = _makeUri('/create-experiment');
+    final url = _makeUri('/postExperiment');
     var token = await SessionDataProvider().getSessionId();
     var body = jsonEncode(object);
     // print(body);
@@ -51,7 +51,8 @@ class ApiClient {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token'
       });
-      // print(response.statusCode);
+      print(response.statusCode);
+      print(response.body);
       return response;
     } catch (er) {
       print(er);
