@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
 
 class MyRequests extends StatefulWidget {
-  const MyRequests({Key? key}) : super(key: key);
+  String title;
+  MyRequests({Key? key, required this.title}) : super(key: key);
 
   @override
   State<MyRequests> createState() => _MyRequestsState();
@@ -22,9 +23,9 @@ class _MyRequestsState extends State<MyRequests> {
           ),
           centerTitle: true,
           backgroundColor: const Color.fromRGBO(248, 180, 1, 1),
-          title: const Text(
-            'Requests',
-            style: TextStyle(
+          title: Text(
+            widget.title,
+            style: const TextStyle(
                 fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black),
           ),
         ),
@@ -54,7 +55,7 @@ class _MyRequestsState extends State<MyRequests> {
                                   horizontal: 16, vertical: 16),
                               margin: const EdgeInsets.only(bottom: 20),
                               width: double.infinity,
-                              height: 150,
+                              // height: 150,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: const [
@@ -71,33 +72,20 @@ class _MyRequestsState extends State<MyRequests> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(15)),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: const [
-                                      Text(
-                                        "Experiment 1",
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black),
-                                      ),
-                                      Text(
-                                        'ospan.aiganym@gmail.com',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
-                                      ),
-                                    ],
+                                  const Text(
+                                    'ospan.aiganym@gmail.com',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
                                   ),
-                                  Column(
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [

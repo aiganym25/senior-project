@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:senior_project/domain/session_data_providers.dart';
-import 'package:senior_project/pages/profile/profile.dart';
 import '../../models/experiment.dart';
 import 'package:senior_project/repo/api_client.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 class ExperimentParametersMV extends ChangeNotifier {
   final titleExperimentController = TextEditingController();
@@ -21,11 +23,13 @@ class ExperimentParametersMV extends ChangeNotifier {
 
   final _apiClient = ApiClient();
 
+  final client = HttpClient();
+
   Future<http.Response> getMyCreatedexperiments() async {
     var token = await SessionDataProvider().getSessionId();
-    _apiClient.getMyCreatedExperiments();
     return http.get(
-        Uri.parse('https://my-spring-app-sp.herokuapp.com/my-created-experiments'),
+        Uri.parse(
+            'https://my-spring-app-sp.herokuapp.com/api/v2/experiment/myCreatedExperiments'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
@@ -83,11 +87,13 @@ class ExperimentParametersMV extends ChangeNotifier {
       notifyListeners();
       return;
     }
+    Navigator.pop(context);
+    Navigator.pop(context);
     // Navigator.of(context).popUntil((route) => route.);
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => const MyProfile(),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<void>(
+    //     builder: (BuildContext context) => const MainPage(),
+    //   ),
+    // );
   }
 }

@@ -23,7 +23,6 @@ class ApiClient {
     // request.headers.add('Accept', 'application/json');
     // request.headers.contentLength = utf8.encode(jsonEncode(parameters)).length;
 
-
     request.headers.add('Authorization', 'Bearer $token');
 
     // request.write(jsonEncode(parameters));
@@ -41,10 +40,10 @@ class ApiClient {
   }
 
   Future<dynamic> createExperiment(Map<String, dynamic> object) async {
-    final url = _makeUri('/postExperiment');
+    final url = _makeUri('/api/v2/experiment/postExperiment');
     var token = await SessionDataProvider().getSessionId();
     var body = jsonEncode(object);
-    // print(body);
+    print(url);
     try {
       var response = await http.post(url, body: body, headers: {
         "Accept": "application/json",
@@ -55,6 +54,7 @@ class ApiClient {
       print(response.body);
       return response;
     } catch (er) {
+      print('errooor');
       print(er);
     }
   }
@@ -63,11 +63,25 @@ class ApiClient {
     final url = _makeUri('/my-created-experiments');
     var token = await SessionDataProvider().getSessionId();
 
-    var response = await http.get(url, headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      'Authorization': 'Bearer $token'
-    });
+    final request = await client.getUrl(url);
+    request.headers.add('Content-Type', 'application/json; charset=UTF-8');
+    request.headers.add('Accept', 'application/json');
+    request.headers.add('Authorization', 'Bearer $token');
+
+    final response = await request.close();
+    final json = await response
+        .transform(utf8.decoder)
+        .toList()
+        .then((value) => value.join())
+        .then((v) => jsonDecode(v) as Map<String, dynamic>);
+        print('printing json');
+    print(json);
+
+    // var response = await http.get(url, headers: {
+    //   "Accept": "application/json",
+    //   "Content-Type": "application/json",
+    //   'Authorization': 'Bearer $token'
+    // });
     // print(response.body);
     return response;
   }

@@ -21,15 +21,14 @@ class _MyProfileState extends State<MyProfile> {
       create: (_) => ExperimentParametersMV(),
       child: CreatedExperiment(id: 1, title: 'Experiment 1'),
     ),
-    ChangeNotifierProvider<RequestedExperimentsMV>(
-      create: (_) => RequestedExperimentsMV(),
-      child: const MyRequests(),
-    ),
+    // ChangeNotifierProvider<RequestedExperimentsMV>(
+    //   create: (_) => RequestedExperimentsMV(),
+    //   child: const MyRequests(),
+    // ),
     const TakenExperiments()
   ];
   List<String> titles = [
     'My created experiments',
-    'Requests to my experiments',
     'My taken experiments'
   ];
 
@@ -63,7 +62,7 @@ class _MyProfileState extends State<MyProfile> {
                     height: 36.h,
                   ),
                   ListOfContainers(
-                      numberOfContainers: 3, widgets: widgets, titles: titles),
+                      numberOfContainers: titles.length, widgets: widgets, titles: titles),
                 ],
               ),
             ),

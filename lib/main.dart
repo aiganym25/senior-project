@@ -6,6 +6,7 @@ import 'package:senior_project/pages/authentication/authentication_page.dart';
 import 'package:senior_project/pages/feed-home/experiment/animated_cards.dart';
 import 'package:senior_project/pages/feed-home/experiment/fill_in_page.dart';
 import 'package:senior_project/pages/profile/created_experiment.dart';
+import 'package:senior_project/pages/profile/view_result.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           ),
           home: const AuthenticationPage(),
           routes: {
+            '/view_results': (context) =>   ViewResult(),
             '/home_page': (context) => AuthProvider(
                 model: AuthModel(), child: const AuthenticationPage()),
             '/body_screen': (context) => const AnimatedCardsPage(),

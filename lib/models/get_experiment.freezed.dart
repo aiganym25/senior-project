@@ -26,11 +26,11 @@ mixin _$MyCreatedExperiments {
   double get betweenWordTime => throw _privateConstructorUsedError;
   double get wordTime => throw _privateConstructorUsedError;
   bool get isJoinable => throw _privateConstructorUsedError;
+  int get numberOfWords => throw _privateConstructorUsedError;
   List<String> get words => throw _privateConstructorUsedError;
   int get participantCount => throw _privateConstructorUsedError;
   List<int> get overallResults => throw _privateConstructorUsedError;
-  int get experimentType => throw _privateConstructorUsedError;
-  UserModel get creator => throw _privateConstructorUsedError;
+  CreatorModel get creator => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,13 +51,13 @@ abstract class $MyCreatedExperimentsCopyWith<$Res> {
       double betweenWordTime,
       double wordTime,
       bool isJoinable,
+      int numberOfWords,
       List<String> words,
       int participantCount,
       List<int> overallResults,
-      int experimentType,
-      UserModel creator});
+      CreatorModel creator});
 
-  $UserModelCopyWith<$Res> get creator;
+  $CreatorModelCopyWith<$Res> get creator;
 }
 
 /// @nodoc
@@ -80,10 +80,10 @@ class _$MyCreatedExperimentsCopyWithImpl<$Res,
     Object? betweenWordTime = null,
     Object? wordTime = null,
     Object? isJoinable = null,
+    Object? numberOfWords = null,
     Object? words = null,
     Object? participantCount = null,
     Object? overallResults = null,
-    Object? experimentType = null,
     Object? creator = null,
   }) {
     return _then(_value.copyWith(
@@ -111,6 +111,10 @@ class _$MyCreatedExperimentsCopyWithImpl<$Res,
           ? _value.isJoinable
           : isJoinable // ignore: cast_nullable_to_non_nullable
               as bool,
+      numberOfWords: null == numberOfWords
+          ? _value.numberOfWords
+          : numberOfWords // ignore: cast_nullable_to_non_nullable
+              as int,
       words: null == words
           ? _value.words
           : words // ignore: cast_nullable_to_non_nullable
@@ -123,21 +127,17 @@ class _$MyCreatedExperimentsCopyWithImpl<$Res,
           ? _value.overallResults
           : overallResults // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      experimentType: null == experimentType
-          ? _value.experimentType
-          : experimentType // ignore: cast_nullable_to_non_nullable
-              as int,
       creator: null == creator
           ? _value.creator
           : creator // ignore: cast_nullable_to_non_nullable
-              as UserModel,
+              as CreatorModel,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $UserModelCopyWith<$Res> get creator {
-    return $UserModelCopyWith<$Res>(_value.creator, (value) {
+  $CreatorModelCopyWith<$Res> get creator {
+    return $CreatorModelCopyWith<$Res>(_value.creator, (value) {
       return _then(_value.copyWith(creator: value) as $Val);
     });
   }
@@ -158,14 +158,14 @@ abstract class _$$_MyCreatedExperimentsCopyWith<$Res>
       double betweenWordTime,
       double wordTime,
       bool isJoinable,
+      int numberOfWords,
       List<String> words,
       int participantCount,
       List<int> overallResults,
-      int experimentType,
-      UserModel creator});
+      CreatorModel creator});
 
   @override
-  $UserModelCopyWith<$Res> get creator;
+  $CreatorModelCopyWith<$Res> get creator;
 }
 
 /// @nodoc
@@ -185,10 +185,10 @@ class __$$_MyCreatedExperimentsCopyWithImpl<$Res>
     Object? betweenWordTime = null,
     Object? wordTime = null,
     Object? isJoinable = null,
+    Object? numberOfWords = null,
     Object? words = null,
     Object? participantCount = null,
     Object? overallResults = null,
-    Object? experimentType = null,
     Object? creator = null,
   }) {
     return _then(_$_MyCreatedExperiments(
@@ -216,6 +216,10 @@ class __$$_MyCreatedExperimentsCopyWithImpl<$Res>
           ? _value.isJoinable
           : isJoinable // ignore: cast_nullable_to_non_nullable
               as bool,
+      numberOfWords: null == numberOfWords
+          ? _value.numberOfWords
+          : numberOfWords // ignore: cast_nullable_to_non_nullable
+              as int,
       words: null == words
           ? _value._words
           : words // ignore: cast_nullable_to_non_nullable
@@ -228,14 +232,10 @@ class __$$_MyCreatedExperimentsCopyWithImpl<$Res>
           ? _value._overallResults
           : overallResults // ignore: cast_nullable_to_non_nullable
               as List<int>,
-      experimentType: null == experimentType
-          ? _value.experimentType
-          : experimentType // ignore: cast_nullable_to_non_nullable
-              as int,
       creator: null == creator
           ? _value.creator
           : creator // ignore: cast_nullable_to_non_nullable
-              as UserModel,
+              as CreatorModel,
     ));
   }
 }
@@ -250,10 +250,10 @@ class _$_MyCreatedExperiments implements _MyCreatedExperiments {
       required this.betweenWordTime,
       required this.wordTime,
       required this.isJoinable,
+      required this.numberOfWords,
       required final List<String> words,
       required this.participantCount,
       required final List<int> overallResults,
-      required this.experimentType,
       required this.creator})
       : _words = words,
         _overallResults = overallResults;
@@ -273,6 +273,8 @@ class _$_MyCreatedExperiments implements _MyCreatedExperiments {
   final double wordTime;
   @override
   final bool isJoinable;
+  @override
+  final int numberOfWords;
   final List<String> _words;
   @override
   List<String> get words {
@@ -292,13 +294,11 @@ class _$_MyCreatedExperiments implements _MyCreatedExperiments {
   }
 
   @override
-  final int experimentType;
-  @override
-  final UserModel creator;
+  final CreatorModel creator;
 
   @override
   String toString() {
-    return 'MyCreatedExperiments(experimentId: $experimentId, experimentName: $experimentName, description: $description, betweenWordTime: $betweenWordTime, wordTime: $wordTime, isJoinable: $isJoinable, words: $words, participantCount: $participantCount, overallResults: $overallResults, experimentType: $experimentType, creator: $creator)';
+    return 'MyCreatedExperiments(experimentId: $experimentId, experimentName: $experimentName, description: $description, betweenWordTime: $betweenWordTime, wordTime: $wordTime, isJoinable: $isJoinable, numberOfWords: $numberOfWords, words: $words, participantCount: $participantCount, overallResults: $overallResults, creator: $creator)';
   }
 
   @override
@@ -318,13 +318,13 @@ class _$_MyCreatedExperiments implements _MyCreatedExperiments {
                 other.wordTime == wordTime) &&
             (identical(other.isJoinable, isJoinable) ||
                 other.isJoinable == isJoinable) &&
+            (identical(other.numberOfWords, numberOfWords) ||
+                other.numberOfWords == numberOfWords) &&
             const DeepCollectionEquality().equals(other._words, _words) &&
             (identical(other.participantCount, participantCount) ||
                 other.participantCount == participantCount) &&
             const DeepCollectionEquality()
                 .equals(other._overallResults, _overallResults) &&
-            (identical(other.experimentType, experimentType) ||
-                other.experimentType == experimentType) &&
             (identical(other.creator, creator) || other.creator == creator));
   }
 
@@ -338,10 +338,10 @@ class _$_MyCreatedExperiments implements _MyCreatedExperiments {
       betweenWordTime,
       wordTime,
       isJoinable,
+      numberOfWords,
       const DeepCollectionEquality().hash(_words),
       participantCount,
       const DeepCollectionEquality().hash(_overallResults),
-      experimentType,
       creator);
 
   @JsonKey(ignore: true)
@@ -367,11 +367,11 @@ abstract class _MyCreatedExperiments implements MyCreatedExperiments {
       required final double betweenWordTime,
       required final double wordTime,
       required final bool isJoinable,
+      required final int numberOfWords,
       required final List<String> words,
       required final int participantCount,
       required final List<int> overallResults,
-      required final int experimentType,
-      required final UserModel creator}) = _$_MyCreatedExperiments;
+      required final CreatorModel creator}) = _$_MyCreatedExperiments;
 
   factory _MyCreatedExperiments.fromJson(Map<String, dynamic> json) =
       _$_MyCreatedExperiments.fromJson;
@@ -389,76 +389,63 @@ abstract class _MyCreatedExperiments implements MyCreatedExperiments {
   @override
   bool get isJoinable;
   @override
+  int get numberOfWords;
+  @override
   List<String> get words;
   @override
   int get participantCount;
   @override
   List<int> get overallResults;
   @override
-  int get experimentType;
-  @override
-  UserModel get creator;
+  CreatorModel get creator;
   @override
   @JsonKey(ignore: true)
   _$$_MyCreatedExperimentsCopyWith<_$_MyCreatedExperiments> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-UserModel _$UserModelFromJson(Map<String, dynamic> json) {
-  return _UserModel.fromJson(json);
+CreatorModel _$CreatorModelFromJson(Map<String, dynamic> json) {
+  return _CreatorModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$UserModel {
-  int get userId => throw _privateConstructorUsedError;
-  String get userEmail => throw _privateConstructorUsedError;
-  String get firstName => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
-  int get age => throw _privateConstructorUsedError;
+mixin _$CreatorModel {
+  int? get userId => throw _privateConstructorUsedError;
+  String? get userEmail => throw _privateConstructorUsedError;
+  String? get firstName => throw _privateConstructorUsedError;
+  String? get lastName => throw _privateConstructorUsedError;
+  int? get age => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
   String? get degree => throw _privateConstructorUsedError;
-  String get role => throw _privateConstructorUsedError;
-  bool get enabled => throw _privateConstructorUsedError;
-  List<AuthorityModel> get authorities => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
-  bool get accountNonExpired => throw _privateConstructorUsedError;
-  bool get accountNonLocked => throw _privateConstructorUsedError;
-  bool get credentialsNonExpired => throw _privateConstructorUsedError;
+  String? get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserModelCopyWith<UserModel> get copyWith =>
+  $CreatorModelCopyWith<CreatorModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserModelCopyWith<$Res> {
-  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
-      _$UserModelCopyWithImpl<$Res, UserModel>;
+abstract class $CreatorModelCopyWith<$Res> {
+  factory $CreatorModelCopyWith(
+          CreatorModel value, $Res Function(CreatorModel) then) =
+      _$CreatorModelCopyWithImpl<$Res, CreatorModel>;
   @useResult
   $Res call(
-      {int userId,
-      String userEmail,
-      String firstName,
-      String lastName,
-      String password,
-      int age,
+      {int? userId,
+      String? userEmail,
+      String? firstName,
+      String? lastName,
+      int? age,
       String? gender,
       String? degree,
-      String role,
-      bool enabled,
-      List<AuthorityModel> authorities,
-      String username,
-      bool accountNonExpired,
-      bool accountNonLocked,
-      bool credentialsNonExpired});
+      String? role});
 }
 
 /// @nodoc
-class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
-    implements $UserModelCopyWith<$Res> {
-  _$UserModelCopyWithImpl(this._value, this._then);
+class _$CreatorModelCopyWithImpl<$Res, $Val extends CreatorModel>
+    implements $CreatorModelCopyWith<$Res> {
+  _$CreatorModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -468,47 +455,36 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = null,
-    Object? userEmail = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? password = null,
-    Object? age = null,
+    Object? userId = freezed,
+    Object? userEmail = freezed,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
+    Object? age = freezed,
     Object? gender = freezed,
     Object? degree = freezed,
-    Object? role = null,
-    Object? enabled = null,
-    Object? authorities = null,
-    Object? username = null,
-    Object? accountNonExpired = null,
-    Object? accountNonLocked = null,
-    Object? credentialsNonExpired = null,
+    Object? role = freezed,
   }) {
     return _then(_value.copyWith(
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as int,
-      userEmail: null == userEmail
+              as int?,
+      userEmail: freezed == userEmail
           ? _value.userEmail
           : userEmail // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstName: null == firstName
+              as String?,
+      firstName: freezed == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastName: null == lastName
+              as String?,
+      lastName: freezed == lastName
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-      age: null == age
+              as String?,
+      age: freezed == age
           ? _value.age
           : age // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -517,115 +493,74 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.degree
           : degree // ignore: cast_nullable_to_non_nullable
               as String?,
-      role: null == role
+      role: freezed == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      enabled: null == enabled
-          ? _value.enabled
-          : enabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      authorities: null == authorities
-          ? _value.authorities
-          : authorities // ignore: cast_nullable_to_non_nullable
-              as List<AuthorityModel>,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      accountNonExpired: null == accountNonExpired
-          ? _value.accountNonExpired
-          : accountNonExpired // ignore: cast_nullable_to_non_nullable
-              as bool,
-      accountNonLocked: null == accountNonLocked
-          ? _value.accountNonLocked
-          : accountNonLocked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      credentialsNonExpired: null == credentialsNonExpired
-          ? _value.credentialsNonExpired
-          : credentialsNonExpired // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as String?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
-  factory _$$_UserModelCopyWith(
-          _$_UserModel value, $Res Function(_$_UserModel) then) =
-      __$$_UserModelCopyWithImpl<$Res>;
+abstract class _$$_CreatorModelCopyWith<$Res>
+    implements $CreatorModelCopyWith<$Res> {
+  factory _$$_CreatorModelCopyWith(
+          _$_CreatorModel value, $Res Function(_$_CreatorModel) then) =
+      __$$_CreatorModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {int userId,
-      String userEmail,
-      String firstName,
-      String lastName,
-      String password,
-      int age,
+      {int? userId,
+      String? userEmail,
+      String? firstName,
+      String? lastName,
+      int? age,
       String? gender,
       String? degree,
-      String role,
-      bool enabled,
-      List<AuthorityModel> authorities,
-      String username,
-      bool accountNonExpired,
-      bool accountNonLocked,
-      bool credentialsNonExpired});
+      String? role});
 }
 
 /// @nodoc
-class __$$_UserModelCopyWithImpl<$Res>
-    extends _$UserModelCopyWithImpl<$Res, _$_UserModel>
-    implements _$$_UserModelCopyWith<$Res> {
-  __$$_UserModelCopyWithImpl(
-      _$_UserModel _value, $Res Function(_$_UserModel) _then)
+class __$$_CreatorModelCopyWithImpl<$Res>
+    extends _$CreatorModelCopyWithImpl<$Res, _$_CreatorModel>
+    implements _$$_CreatorModelCopyWith<$Res> {
+  __$$_CreatorModelCopyWithImpl(
+      _$_CreatorModel _value, $Res Function(_$_CreatorModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = null,
-    Object? userEmail = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? password = null,
-    Object? age = null,
+    Object? userId = freezed,
+    Object? userEmail = freezed,
+    Object? firstName = freezed,
+    Object? lastName = freezed,
+    Object? age = freezed,
     Object? gender = freezed,
     Object? degree = freezed,
-    Object? role = null,
-    Object? enabled = null,
-    Object? authorities = null,
-    Object? username = null,
-    Object? accountNonExpired = null,
-    Object? accountNonLocked = null,
-    Object? credentialsNonExpired = null,
+    Object? role = freezed,
   }) {
-    return _then(_$_UserModel(
-      userId: null == userId
+    return _then(_$_CreatorModel(
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as int,
-      userEmail: null == userEmail
+              as int?,
+      userEmail: freezed == userEmail
           ? _value.userEmail
           : userEmail // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstName: null == firstName
+              as String?,
+      firstName: freezed == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastName: null == lastName
+              as String?,
+      lastName: freezed == lastName
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-      age: null == age
+              as String?,
+      age: freezed == age
           ? _value.age
           : age // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
@@ -634,109 +569,57 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.degree
           : degree // ignore: cast_nullable_to_non_nullable
               as String?,
-      role: null == role
+      role: freezed == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      enabled: null == enabled
-          ? _value.enabled
-          : enabled // ignore: cast_nullable_to_non_nullable
-              as bool,
-      authorities: null == authorities
-          ? _value._authorities
-          : authorities // ignore: cast_nullable_to_non_nullable
-              as List<AuthorityModel>,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      accountNonExpired: null == accountNonExpired
-          ? _value.accountNonExpired
-          : accountNonExpired // ignore: cast_nullable_to_non_nullable
-              as bool,
-      accountNonLocked: null == accountNonLocked
-          ? _value.accountNonLocked
-          : accountNonLocked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      credentialsNonExpired: null == credentialsNonExpired
-          ? _value.credentialsNonExpired
-          : credentialsNonExpired // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserModel implements _UserModel {
-  const _$_UserModel(
-      {required this.userId,
-      required this.userEmail,
-      required this.firstName,
-      required this.lastName,
-      required this.password,
-      required this.age,
-      required this.gender,
-      required this.degree,
-      required this.role,
-      required this.enabled,
-      required final List<AuthorityModel> authorities,
-      required this.username,
-      required this.accountNonExpired,
-      required this.accountNonLocked,
-      required this.credentialsNonExpired})
-      : _authorities = authorities;
+class _$_CreatorModel implements _CreatorModel {
+  const _$_CreatorModel(
+      {this.userId,
+      this.userEmail,
+      this.firstName,
+      this.lastName,
+      this.age,
+      this.gender,
+      this.degree,
+      this.role});
 
-  factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
-      _$$_UserModelFromJson(json);
+  factory _$_CreatorModel.fromJson(Map<String, dynamic> json) =>
+      _$$_CreatorModelFromJson(json);
 
   @override
-  final int userId;
+  final int? userId;
   @override
-  final String userEmail;
+  final String? userEmail;
   @override
-  final String firstName;
+  final String? firstName;
   @override
-  final String lastName;
+  final String? lastName;
   @override
-  final String password;
-  @override
-  final int age;
+  final int? age;
   @override
   final String? gender;
   @override
   final String? degree;
   @override
-  final String role;
-  @override
-  final bool enabled;
-  final List<AuthorityModel> _authorities;
-  @override
-  List<AuthorityModel> get authorities {
-    if (_authorities is EqualUnmodifiableListView) return _authorities;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_authorities);
-  }
-
-  @override
-  final String username;
-  @override
-  final bool accountNonExpired;
-  @override
-  final bool accountNonLocked;
-  @override
-  final bool credentialsNonExpired;
+  final String? role;
 
   @override
   String toString() {
-    return 'UserModel(userId: $userId, userEmail: $userEmail, firstName: $firstName, lastName: $lastName, password: $password, age: $age, gender: $gender, degree: $degree, role: $role, enabled: $enabled, authorities: $authorities, username: $username, accountNonExpired: $accountNonExpired, accountNonLocked: $accountNonLocked, credentialsNonExpired: $credentialsNonExpired)';
+    return 'CreatorModel(userId: $userId, userEmail: $userEmail, firstName: $firstName, lastName: $lastName, age: $age, gender: $gender, degree: $degree, role: $role)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserModel &&
+            other is _$_CreatorModel &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userEmail, userEmail) ||
                 other.userEmail == userEmail) &&
@@ -744,250 +627,63 @@ class _$_UserModel implements _UserModel {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
             (identical(other.age, age) || other.age == age) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.degree, degree) || other.degree == degree) &&
-            (identical(other.role, role) || other.role == role) &&
-            (identical(other.enabled, enabled) || other.enabled == enabled) &&
-            const DeepCollectionEquality()
-                .equals(other._authorities, _authorities) &&
-            (identical(other.username, username) ||
-                other.username == username) &&
-            (identical(other.accountNonExpired, accountNonExpired) ||
-                other.accountNonExpired == accountNonExpired) &&
-            (identical(other.accountNonLocked, accountNonLocked) ||
-                other.accountNonLocked == accountNonLocked) &&
-            (identical(other.credentialsNonExpired, credentialsNonExpired) ||
-                other.credentialsNonExpired == credentialsNonExpired));
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      userId,
-      userEmail,
-      firstName,
-      lastName,
-      password,
-      age,
-      gender,
-      degree,
-      role,
-      enabled,
-      const DeepCollectionEquality().hash(_authorities),
-      username,
-      accountNonExpired,
-      accountNonLocked,
-      credentialsNonExpired);
+  int get hashCode => Object.hash(runtimeType, userId, userEmail, firstName,
+      lastName, age, gender, degree, role);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
-      __$$_UserModelCopyWithImpl<_$_UserModel>(this, _$identity);
+  _$$_CreatorModelCopyWith<_$_CreatorModel> get copyWith =>
+      __$$_CreatorModelCopyWithImpl<_$_CreatorModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserModelToJson(
+    return _$$_CreatorModelToJson(
       this,
     );
   }
 }
 
-abstract class _UserModel implements UserModel {
-  const factory _UserModel(
-      {required final int userId,
-      required final String userEmail,
-      required final String firstName,
-      required final String lastName,
-      required final String password,
-      required final int age,
-      required final String? gender,
-      required final String? degree,
-      required final String role,
-      required final bool enabled,
-      required final List<AuthorityModel> authorities,
-      required final String username,
-      required final bool accountNonExpired,
-      required final bool accountNonLocked,
-      required final bool credentialsNonExpired}) = _$_UserModel;
+abstract class _CreatorModel implements CreatorModel {
+  const factory _CreatorModel(
+      {final int? userId,
+      final String? userEmail,
+      final String? firstName,
+      final String? lastName,
+      final int? age,
+      final String? gender,
+      final String? degree,
+      final String? role}) = _$_CreatorModel;
 
-  factory _UserModel.fromJson(Map<String, dynamic> json) =
-      _$_UserModel.fromJson;
+  factory _CreatorModel.fromJson(Map<String, dynamic> json) =
+      _$_CreatorModel.fromJson;
 
   @override
-  int get userId;
+  int? get userId;
   @override
-  String get userEmail;
+  String? get userEmail;
   @override
-  String get firstName;
+  String? get firstName;
   @override
-  String get lastName;
+  String? get lastName;
   @override
-  String get password;
-  @override
-  int get age;
+  int? get age;
   @override
   String? get gender;
   @override
   String? get degree;
   @override
-  String get role;
-  @override
-  bool get enabled;
-  @override
-  List<AuthorityModel> get authorities;
-  @override
-  String get username;
-  @override
-  bool get accountNonExpired;
-  @override
-  bool get accountNonLocked;
-  @override
-  bool get credentialsNonExpired;
+  String? get role;
   @override
   @JsonKey(ignore: true)
-  _$$_UserModelCopyWith<_$_UserModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-AuthorityModel _$AuthorityModelFromJson(Map<String, dynamic> json) {
-  return _AuthorityModel.fromJson(json);
-}
-
-/// @nodoc
-mixin _$AuthorityModel {
-  String get authority => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $AuthorityModelCopyWith<AuthorityModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AuthorityModelCopyWith<$Res> {
-  factory $AuthorityModelCopyWith(
-          AuthorityModel value, $Res Function(AuthorityModel) then) =
-      _$AuthorityModelCopyWithImpl<$Res, AuthorityModel>;
-  @useResult
-  $Res call({String authority});
-}
-
-/// @nodoc
-class _$AuthorityModelCopyWithImpl<$Res, $Val extends AuthorityModel>
-    implements $AuthorityModelCopyWith<$Res> {
-  _$AuthorityModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? authority = null,
-  }) {
-    return _then(_value.copyWith(
-      authority: null == authority
-          ? _value.authority
-          : authority // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$_AuthorityModelCopyWith<$Res>
-    implements $AuthorityModelCopyWith<$Res> {
-  factory _$$_AuthorityModelCopyWith(
-          _$_AuthorityModel value, $Res Function(_$_AuthorityModel) then) =
-      __$$_AuthorityModelCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String authority});
-}
-
-/// @nodoc
-class __$$_AuthorityModelCopyWithImpl<$Res>
-    extends _$AuthorityModelCopyWithImpl<$Res, _$_AuthorityModel>
-    implements _$$_AuthorityModelCopyWith<$Res> {
-  __$$_AuthorityModelCopyWithImpl(
-      _$_AuthorityModel _value, $Res Function(_$_AuthorityModel) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? authority = null,
-  }) {
-    return _then(_$_AuthorityModel(
-      authority: null == authority
-          ? _value.authority
-          : authority // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_AuthorityModel implements _AuthorityModel {
-  const _$_AuthorityModel({required this.authority});
-
-  factory _$_AuthorityModel.fromJson(Map<String, dynamic> json) =>
-      _$$_AuthorityModelFromJson(json);
-
-  @override
-  final String authority;
-
-  @override
-  String toString() {
-    return 'AuthorityModel(authority: $authority)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_AuthorityModel &&
-            (identical(other.authority, authority) ||
-                other.authority == authority));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, authority);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_AuthorityModelCopyWith<_$_AuthorityModel> get copyWith =>
-      __$$_AuthorityModelCopyWithImpl<_$_AuthorityModel>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_AuthorityModelToJson(
-      this,
-    );
-  }
-}
-
-abstract class _AuthorityModel implements AuthorityModel {
-  const factory _AuthorityModel({required final String authority}) =
-      _$_AuthorityModel;
-
-  factory _AuthorityModel.fromJson(Map<String, dynamic> json) =
-      _$_AuthorityModel.fromJson;
-
-  @override
-  String get authority;
-  @override
-  @JsonKey(ignore: true)
-  _$$_AuthorityModelCopyWith<_$_AuthorityModel> get copyWith =>
+  _$$_CreatorModelCopyWith<_$_CreatorModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

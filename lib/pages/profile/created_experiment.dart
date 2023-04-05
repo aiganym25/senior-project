@@ -38,54 +38,47 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                 fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black),
           ),
         ),
-        body: SafeArea( 
-          child:
-          
-          
-           FutureBuilder(
+        body: SafeArea(
+          child: FutureBuilder(
               future: model.getMyCreatedexperiments(),
               builder: (BuildContext context,
                   AsyncSnapshot<http.Response> snapshot) {
-                 print(snapshot.hasData);
                 if (snapshot.hasData) {
-                  var experiments = jsonDecode(snapshot.data!.body);
+                  var experiments = jsonDecode(snapshot.data!.body)['data'];
                   return Column(
                     children: [
                       Expanded(
-                        child: SingleChildScrollView(
-                          physics: const ScrollPhysics(),
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 32,
-                              ),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: experiments.length,
-                                itemBuilder: (context, index) {
-                                  var experiment =
-                                      MyCreatedExperiments.fromJson(
-                                          experiments[index]);
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute<void>(
-                                          builder: (BuildContext context) =>
-                                              ViewResult(pinCode: 'Exp1'),
-                                        ),
-                                      );
-                                    },
-                                    child: ExperimentWidget(
-                                      title: experiment.experimentName,
-                                      description: experiment.description,
+                        child: experiments.isNotEmpty
+                            ? SingleChildScrollView(
+                                physics: const ScrollPhysics(),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 32,
                                     ),
-                                  );
-                                },
+                                    ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: experiments.length,
+                                      itemBuilder: (context, index) {
+                                        var experiment =
+                                            MyCreatedExperiments.fromJson(
+                                                experiments[index]);
+                                        return MyExperimentWidget(
+                                          title: experiment.experimentName,
+                                          description: experiment.description,
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ),
                               )
-                            ],
-                          ),
-                        ),
+                            : const Center(
+                                child: Text('No created experiments',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 20)),
+                              ),
                       ),
                       GestureDetector(
                           onTap: () {
@@ -95,7 +88,7 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                                   return ChangeNotifierProvider<
                                       ExperimentParametersMV>(
                                     create: (_) => ExperimentParametersMV(),
-                                    child: NewExperimentPage(),
+                                    child: const NewExperimentPage(),
                                   );
                                 },
                               ),
@@ -109,42 +102,12 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                           )),
                     ],
                   ); // display the data in a Text widget
-                } else if (snapshot.data!.statusCode == 403) {
-                  //  print(snapshot.data.statusCode);
-                  return Column(
-                    children: [
-                      const Expanded(
-                        child: Center(
-                          child: Text('No created experiments',
-                              style: TextStyle(
-                                  color: Colors.grey, fontSize: 20)),
-                        ),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (BuildContext context) {
-                                  return ChangeNotifierProvider<
-                                      ExperimentParametersMV>(
-                                    create: (_) => ExperimentParametersMV(),
-                                    child: NewExperimentPage(),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                          child: ButtonWidget(
-                            txt: 'Create a new experiment',
-                          )),
-                    ],
-                  ); // show a loading indicator while waiting for data
-                } else {
+                }
+                // show a loading indicator while waiting for data
+                else {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
-       
-       
         ));
   }
 }

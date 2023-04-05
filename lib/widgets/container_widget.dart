@@ -30,7 +30,7 @@ class ListOfContainers extends StatelessWidget {
             },
             child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                margin: const EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 50),
                 width: double.infinity,
                 height: 75.h,
                 decoration: BoxDecoration(

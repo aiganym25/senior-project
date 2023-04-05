@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'get_experiment.freezed.dart';
 part 'get_experiment.g.dart';
@@ -12,11 +13,11 @@ abstract class MyCreatedExperiments with _$MyCreatedExperiments {
     required double betweenWordTime,
     required double wordTime,
     required bool isJoinable,
+    required int numberOfWords,
     required List<String> words,
     required int participantCount,
     required List<int> overallResults,
-    required int experimentType,
-    required UserModel creator,
+    required CreatorModel creator,
   }) = _MyCreatedExperiments;
 
   factory MyCreatedExperiments.fromJson(Map<String, dynamic> json) =>
@@ -24,35 +25,18 @@ abstract class MyCreatedExperiments with _$MyCreatedExperiments {
 }
 
 @freezed
-abstract class UserModel with _$UserModel {
-  const factory UserModel({
-    required int userId,
-    required String userEmail,
-    required String firstName,
-    required String lastName,
-    required String password,
-    required int age,
-    required String? gender,
-    required String? degree,
-    required String role,
-    required bool enabled,
-    required List<AuthorityModel> authorities,
-    required String username,
-    required bool accountNonExpired,
-    required bool accountNonLocked,
-    required bool credentialsNonExpired,
-  }) = _UserModel;
+abstract class CreatorModel with _$CreatorModel {
+  const factory CreatorModel({
+    int? userId,
+    String? userEmail,
+    String? firstName,
+    String? lastName,
+    int? age,
+    String? gender,
+    String? degree,
+    String? role,
+  }) = _CreatorModel;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
-}
-
-@freezed
-abstract class AuthorityModel with _$AuthorityModel {
-  const factory AuthorityModel({
-    required String authority,
-  }) = _AuthorityModel;
-
-  factory AuthorityModel.fromJson(Map<String, dynamic> json) =>
-      _$AuthorityModelFromJson(json);
+  factory CreatorModel.fromJson(Map<String, dynamic> json) =>
+      _$CreatorModelFromJson(json);
 }
