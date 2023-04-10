@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:senior_project/domain/session_data_providers.dart';
 import 'package:senior_project/pages/main_page.dart';
@@ -36,8 +38,11 @@ class AuthModel extends ChangeNotifier {
     notifyListeners();
 
     String? token;
+    dynamic? userInfo;
     try {
       token = await _apiClient.login(email: login, password: password);
+      userInfo = await _apiClient.getMyUserInfo(token);
+      print(userInfo);
     } catch (er) {
       _errorMessage = 'Wrong email or password';
     }
@@ -52,8 +57,10 @@ class AuthModel extends ChangeNotifier {
       notifyListeners();
       return;
     }
-
+    final userName = '${userInfo['data']['firstName']} ${userInfo['data']['lastName']}';
+    print(userName);
     await _sessionDataProvider.setSessionId(token);
+    await _sessionDataProvider.setUserName(userName);
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) => const MainPage(),
@@ -98,6 +105,7 @@ class AuthModel extends ChangeNotifier {
           lastName: lastName);
     } catch (er) {
       _errorMessage = 'Registration failed, try again';
+      print(er);
     }
 
     _isAuthProgress = false;
@@ -118,6 +126,7 @@ class AuthModel extends ChangeNotifier {
       ),
     );
   }
+
 }
 
 class AuthProvider extends InheritedNotifier {

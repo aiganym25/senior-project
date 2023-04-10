@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:senior_project/pages/feed-home/experiment/result_page.dart';
 
 import '../../const.dart';
 
@@ -88,12 +87,12 @@ class _TakenExperimentsState extends State<TakenExperiments> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute<void>(
-                                        builder: (BuildContext context) =>
-                                            Result(words: words),
-                                      ),
-                                    );
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute<void>(
+                                    //     builder: (BuildContext context) =>
+                                    //         Result(words: words),
+                                    //   ),
+                                    // );
                                   },
                                   child: Align(
                                     alignment: Alignment.centerRight,

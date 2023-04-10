@@ -1,28 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../const.dart';
+import 'package:provider/provider.dart';
+import 'package:senior_project/pages/providers/request_mv.dart';
 
 class Result extends StatefulWidget {
-  Result({Key? key, required this.words}) : super(key: key);
-  List<String> words;
+  const Result({Key? key, required this.words, required this.enteredWords, required this.id})
+      : super(key: key);
+  final List<String> enteredWords;
+  final List<dynamic> words;
+  final int id;
 
   @override
   State<Result> createState() => _ResultState();
 }
 
 class _ResultState extends State<Result> {
-  List<bool> isCorrect = List.filled(listOfWords.length, false);
   int correctWords = 0;
+  int count = 0;
+  late Map<dynamic, int> map;
+  late List<int> counts;
+  late List<bool> isCorrectList;
+
+  @override
+  void initState() {
+    counts = List.filled(widget.enteredWords.length, 0);
+    map = Map.fromIterables(widget.enteredWords, counts);
+    isCorrectList = List.filled(widget.enteredWords.length, false);
+
+    for (int i = 0; i < widget.words.length; i++) {
+      if (widget.words.contains(widget.enteredWords[i])) {
+        if (map[widget.enteredWords[i]] != 1) {
+          isCorrectList[i] = true;
+          correctWords++;
+        } else {
+          isCorrectList[i] = false;
+        }
+        map[widget.enteredWords[i]] = map[widget.enteredWords[i]]! + 1;
+      } else {
+        isCorrectList[i] = false;
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    for (int i = 0; i < listOfWords.length; i++) {
-      if (listOfWords.contains(widget.words[i])) {
-        correctWords++;
-      }
-    }
+    final model = Provider.of<RequestedExperimentsMV>(context);
     return Scaffold(
       backgroundColor: const Color.fromRGBO(248, 180, 1, 1),
       appBar: AppBar(
@@ -40,62 +64,80 @@ class _ResultState extends State<Result> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 20.h),
-          child: SingleChildScrollView(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  const SizedBox(height: 32),
-                  Text(
-                    'You remembered $correctWords words out of  ${listOfWords.length}: ',
-                    style: GoogleFonts.livvic(
-                        fontSize: 21,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: listOfWords.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                              margin: const EdgeInsets.only(bottom: 32),
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              height: 38,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    widget.words[index],
-                                    style: GoogleFonts.livvic(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w400,
-                                      color: listOfWords
-                                              .contains(widget.words[index])
-                                          ? Colors.black
-                                          : Colors.red,
-                                    ),
-                                  ),
-                                  listOfWords.contains(widget.words[index])
-                                      ? Image.asset("assets/correct.png")
-                                      : Image.asset("assets/incorrect.png"),
-                                ],
-                              ));
-                        }),
-                  ),
-                ],
+          child: Column(
+            children: [
+              Text(
+                'You remembered $correctWords words out of  ${widget.words.length}: ',
+                style: GoogleFonts.livvic(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
-            ),
+              const SizedBox(
+                height: 32,
+              ),
+              Expanded(
+                child: ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: widget.words.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          margin: const EdgeInsets.only(bottom: 32),
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                widget.enteredWords[index],
+                                style: GoogleFonts.livvic(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w400,
+                                  color: isCorrectList[index] == true
+                                      ? Colors.black
+                                      : Colors.red,
+                                ),
+                              ),
+                              isCorrectList[index] == true
+                                  ? Image.asset("assets/correct.png")
+                                  : Image.asset("assets/incorrect.png"),
+                            ],
+                          ));
+                    }),
+              ),
+              GestureDetector(
+                onTap: () {
+                  model.sendResults(widget.enteredWords, widget.id);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: const Color.fromARGB(255, 198, 55, 44),
+                  ),
+                  child: const Center(
+                    child: Text('Close',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20)),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

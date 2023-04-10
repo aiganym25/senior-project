@@ -6,10 +6,49 @@ import 'package:http/http.dart' as http;
 class ApiClient {
   final client = HttpClient();
   static const _host = 'https://my-spring-app-sp.herokuapp.com';
-  // final Map<String, String> _requestHeaders = {
-  //   "Accept": "application/json",
-  //   "Content-Type": "application/json"
-  // };
+
+  Future<dynamic> getMyUserInfo(String token) async {
+    final url = _makeUri('/api/v2/user/myUserInfo');
+
+    var response = await http.get(url, headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    });
+    return jsonDecode(response.body);
+  }
+
+  Future<dynamic> getRequestStatus() async {
+    final url = _makeUri('/api/v2/particpation/myRequests');
+    var token = await SessionDataProvider().getSessionId();
+    try {
+      var response = await http.get(url, headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
+      });
+      // print(response.body);
+      return response.body;
+    } catch (er) {
+      print(er);
+    }
+  }
+
+  Future<dynamic> sendRequest(int id) async {
+    final url = _makeUri('/api/v2/particpation/join/$id');
+    var token = await SessionDataProvider().getSessionId();
+    try {
+      var response = await http.post(url, headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
+      });
+      print(response.statusCode);
+      return response;
+    } catch (er) {
+      print(er);
+    }
+  }
 
   Future<dynamic> getExperimentsByEmail(String email) async {
     final url = _makeUri('/experiments-byEmail/${email}');
@@ -17,17 +56,9 @@ class ApiClient {
     var token = await SessionDataProvider().getSessionId();
 
     final request = await client.getUrl(url);
-    print(request);
-
-    // request.headers.add('Content-Type', 'application/json; charset=UTF-8');
-    // request.headers.add('Accept', 'application/json');
-    // request.headers.contentLength = utf8.encode(jsonEncode(parameters)).length;
-
     request.headers.add('Authorization', 'Bearer $token');
-
-    // request.write(jsonEncode(parameters));
-
     final response = await request.close();
+
     print('printing');
     print(response.statusCode);
     print(response);
@@ -39,8 +70,50 @@ class ApiClient {
     print(json);
   }
 
-  Future<dynamic> createExperiment(Map<String, dynamic> object) async {
+  Future<dynamic> createExperimentWithEnterWords(
+      Map<String, dynamic> object) async {
     final url = _makeUri('/api/v2/experiment/postExperiment');
+    var token = await SessionDataProvider().getSessionId();
+    var body = jsonEncode(object);
+    print(url);
+    try {
+      var response = await http.post(url, body: body, headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
+      });
+      print(response.statusCode);
+      print(response.body);
+      return response;
+    } catch (er) {
+      print('errooor');
+      print(er);
+    }
+  }
+
+  Future<dynamic> createExperimentByFreqLen(Map<String, dynamic> object) async {
+    final url = _makeUri('/api/v2/experiment/postExperimentWithParam');
+    var token = await SessionDataProvider().getSessionId();
+    var body = jsonEncode(object);
+    print(url);
+    try {
+      var response = await http.post(url, body: body, headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token'
+      });
+      print(response.statusCode);
+      print(response.body);
+      return response;
+    } catch (er) {
+      print('errooor');
+      print(er);
+    }
+  }
+
+  Future<dynamic> createExperimentWithRandomWords(
+      Map<String, dynamic> object) async {
+    final url = _makeUri('/api/v2/experiment/postRandomV2');
     var token = await SessionDataProvider().getSessionId();
     var body = jsonEncode(object);
     print(url);
@@ -63,26 +136,12 @@ class ApiClient {
     final url = _makeUri('/my-created-experiments');
     var token = await SessionDataProvider().getSessionId();
 
-    final request = await client.getUrl(url);
-    request.headers.add('Content-Type', 'application/json; charset=UTF-8');
-    request.headers.add('Accept', 'application/json');
-    request.headers.add('Authorization', 'Bearer $token');
-
-    final response = await request.close();
-    final json = await response
-        .transform(utf8.decoder)
-        .toList()
-        .then((value) => value.join())
-        .then((v) => jsonDecode(v) as Map<String, dynamic>);
-        print('printing json');
-    print(json);
-
-    // var response = await http.get(url, headers: {
-    //   "Accept": "application/json",
-    //   "Content-Type": "application/json",
-    //   'Authorization': 'Bearer $token'
-    // });
-    // print(response.body);
+    var response = await http.get(url, headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    });
+    print(response.body);
     return response;
   }
 
@@ -141,6 +200,7 @@ class ApiClient {
       "degree": degree
     };
 
+    print(parameters);
     final request = await client.postUrl(url);
     request.headers.contentType = ContentType.json;
     request.write(jsonEncode(parameters));
@@ -151,7 +211,8 @@ class ApiClient {
         .toList()
         .then((value) => value.join())
         .then((v) => jsonDecode(v) as Map<String, dynamic>);
-
+    print(response.statusCode);
+    print(response);
     final token = json["token"] as String;
     return token;
   }

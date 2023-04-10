@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:senior_project/domain/session_data_providers.dart';
 import '../../models/experiment.dart';
@@ -14,6 +12,13 @@ class ExperimentParametersMV extends ChangeNotifier {
   final wordShowTimeController = TextEditingController();
   final betweenWordTimeController = TextEditingController();
   final wordsController = TextEditingController();
+
+  final lowerFreqController = TextEditingController();
+  final upperFreqController = TextEditingController();
+  final lengthController = TextEditingController();
+
+  int selectedOption = 1;
+
   String isJoinableExperiment = 'True';
 
   String? _errorMessage;
@@ -24,12 +29,35 @@ class ExperimentParametersMV extends ChangeNotifier {
   final _apiClient = ApiClient();
 
   final client = HttpClient();
+  bool isSendRequest = false;
+
+  Future<void> sendRequest(int id) async{
+    final responseStatusCode = await _apiClient.sendRequest(id);
+    if(responseStatusCode == 200){
+      isSendRequest = true;
+      notifyListeners();
+    }
+  }
+
+
 
   Future<http.Response> getMyCreatedexperiments() async {
     var token = await SessionDataProvider().getSessionId();
     return http.get(
         Uri.parse(
             'https://my-spring-app-sp.herokuapp.com/api/v2/experiment/myCreatedExperiments'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token'
+        });
+  }
+
+  Future<http.Response> getAvailableExperiments() async {
+    var token = await SessionDataProvider().getSessionId();
+    return http.get(
+        Uri.parse(
+            'https://my-spring-app-sp.herokuapp.com/api/v2/experiment/getAllExperiments'),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
@@ -56,7 +84,6 @@ class ExperimentParametersMV extends ChangeNotifier {
       notifyListeners();
     }
     if (title.isEmpty ||
-        words.isEmpty ||
         description.isEmpty ||
         betweenWordTimeController.text.isEmpty ||
         wordShowTimeController.text.isEmpty) {
@@ -68,17 +95,42 @@ class ExperimentParametersMV extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
 
-    var newExperiment = NewExperiment(
+    var requestBodyEnterWords = NewExperiment(
         experimentName: title,
         words: words,
         description: description,
         betweenWordTime: betweenWordTime,
         wordTime: wordShowTime,
         isJoinable: isJoinableExperiment);
-    var activityData = newExperiment.toJson();
+
+    var requestBodyWithFreqLen = {
+      "experimentName": title,
+      "description": description,
+      "wordTime": wordShowTime,
+      "betweenWordTime": betweenWordTime,
+      "numberOfWords": numberOfWordsController.text,
+      "frequencyRange": [lowerFreqController.text, upperFreqController.text],
+      "lengthOfWords": 6,
+      "isJoinable": true
+    };
+
+    var requestBodyRandomWords = {
+      "experimentName": title,
+      "description": description,
+      "wordTime": wordShowTime,
+      "betweenWordTime": betweenWordTime,
+      "numberOfWords": numberOfWordsController.text,
+      "isJoinable": true
+    };
 
     try {
-      var response = await _apiClient.createExperiment(activityData);
+      var response = selectedOption == 1
+          ? await _apiClient.createExperimentByFreqLen(requestBodyWithFreqLen)
+          : selectedOption == 2
+              ? await _apiClient
+                  .createExperimentWithRandomWords(requestBodyRandomWords)
+              : await _apiClient
+                  .createExperimentWithEnterWords(requestBodyEnterWords.toJson());
     } catch (er) {
       _errorMessage = 'Experiment creation failed, please try again!';
       print(er);

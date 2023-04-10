@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:senior_project/pages/providers/request_mv.dart';
 
-import '../pages/profile/my_request.dart';
+import '../pages/providers/experiment_mv.dart';
 
-class MyExperimentWidget extends StatefulWidget {
-  String title;
-  String description;
-  MyExperimentWidget({Key? key, required this.title, required this.description})
+class ExperimentWidget extends StatefulWidget {
+  final String title;
+  final String description;
+  final String creator;
+  final int id;
+  const ExperimentWidget(
+      {Key? key,
+      required this.title,
+      required this.description,
+      required this.creator,
+      required this.id})
       : super(key: key);
 
   @override
-  State<MyExperimentWidget> createState() => _MyExperimentWidgetState();
+  State<ExperimentWidget> createState() => _ExperimentWidgetState();
 }
 
-class _MyExperimentWidgetState extends State<MyExperimentWidget> {
+class _ExperimentWidgetState extends State<ExperimentWidget> {
   String firstHalf = '';
   String secondHalf = '';
 
@@ -34,12 +39,14 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
     }
   }
 
+  bool isSendRequest = false;
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<ExperimentParametersMV>(context);
+
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
-        width: MediaQuery.of(context).size.width * 0.1,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: const [
@@ -56,87 +63,17 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
           borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.title,
-                  style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black),
-                ),
-                GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: SizedBox(
-                                height: 150.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text(
-                                      'Number of words: 10',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      'Word show time: 1.5 sec',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      'The length of words: 3',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      'Frequency of words: high',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  child: const Text('Close'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                    child: const Icon(Icons.info, size: 30)),
-              ],
+            Text(
+              '${widget.title[0].toUpperCase()}${widget.title.substring(1).toLowerCase()}',
+              style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black),
             ),
             const SizedBox(
-              height: 16,
+              height: 8,
             ),
             secondHalf.isEmpty
                 ? Text(firstHalf)
@@ -168,71 +105,70 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
                     ],
                   ),
             const SizedBox(
-              height: 16,
+              height: 8,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/view_results');
-                  },
-                  child: Container(
-                    width: 150,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(0, 183, 152, 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
+            RichText(
+              text: TextSpan(
+                text: 'Creater: ',
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: widget.creator,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isSendRequest = true;
+                  });
+
+                  model.sendRequest(widget.id);
+                },
+                child: Container(
+                  width: 110,
+                  height: 50,
+                  margin: const EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    color: isSendRequest == false
+                        ? const Color.fromRGBO(29, 119, 255, 1)
+                        : const Color.fromRGBO(222, 222, 222, 1),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
                     ),
-                    child: const Center(
-                      child: Text(
-                        "View results",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ),
+                  ),
+                  child: Center(
+                    child: isSendRequest == false
+                        ? const Text(
+                            "Send Request",
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          )
+                        : const Text(
+                            "In progress",
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                          ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ChangeNotifierProvider<RequestedExperimentsMV>(
-                            create: (_) => RequestedExperimentsMV(),
-                            child:  MyRequests(title: widget.title),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 150,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(178, 2, 2, 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "View requests",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )
+              ),
+            ),
           ],
         ));
   }

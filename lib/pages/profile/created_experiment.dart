@@ -1,19 +1,16 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:senior_project/models/get_experiment.dart';
-import 'package:senior_project/pages/profile/view_result.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
 import 'package:senior_project/widgets/buttons/button.dart';
 import 'package:senior_project/pages/profile/new_exp_param_page.dart';
-import 'package:senior_project/widgets/experiment_widget.dart';
+import 'package:senior_project/widgets/my_experiment_widget.dart';
 import 'package:http/http.dart' as http;
 
 class CreatedExperiment extends StatefulWidget {
-  int id;
-  String title;
-  CreatedExperiment({Key? key, required this.id, required this.title})
+  final int id;
+  final String title;
+  const CreatedExperiment({Key? key, required this.id, required this.title})
       : super(key: key);
 
   @override
@@ -62,12 +59,13 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                                       shrinkWrap: true,
                                       itemCount: experiments.length,
                                       itemBuilder: (context, index) {
+                                        // print(experiments);
                                         var experiment =
-                                            MyCreatedExperiments.fromJson(
-                                                experiments[index]);
+                                           experiments[index];
                                         return MyExperimentWidget(
-                                          title: experiment.experimentName,
-                                          description: experiment.description,
+                                          experimentId: experiment['experimentId'],
+                                          title: experiment['experimentName'],
+                                          description: experiment['description'],
                                         );
                                       },
                                     )
@@ -85,11 +83,7 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                             Navigator.of(context).push(
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) {
-                                  return ChangeNotifierProvider<
-                                      ExperimentParametersMV>(
-                                    create: (_) => ExperimentParametersMV(),
-                                    child: const NewExperimentPage(),
-                                  );
+                                  return const NewExperimentPage();
                                 },
                               ),
                             );

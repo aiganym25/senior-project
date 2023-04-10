@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ListOfContainers extends StatelessWidget {
-  int numberOfContainers;
-  List<String> titles;
-  List<Widget> widgets;
-  ListOfContainers(
+  final int numberOfContainers;
+  final List<String> titles;
+  final List<Widget> widgets;
+  const ListOfContainers(
       {Key? key,
       required this.numberOfContainers,
       required this.widgets,
@@ -30,7 +30,7 @@ class ListOfContainers extends StatelessWidget {
             },
             child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                margin: const EdgeInsets.only(bottom: 50),
+                margin: const EdgeInsets.only(bottom: 32),
                 width: double.infinity,
                 height: 75.h,
                 decoration: BoxDecoration(

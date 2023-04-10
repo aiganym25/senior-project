@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:senior_project/pages/providers/experiment_mv.dart';
-import 'package:senior_project/pages/providers/request_mv.dart';
-import 'package:senior_project/repo/base_client.dart';
-import 'package:senior_project/widgets/cards/joinable_card.dart';
-import 'package:senior_project/repo/api_client.dart';
 import 'package:http/http.dart' as http;
+
+import '../../widgets/experiment_widget.dart';
+import '../../widgets/search_widget.dart';
 
 class AvailableExperiments extends StatefulWidget {
   const AvailableExperiments({Key? key}) : super(key: key);
@@ -31,100 +30,59 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
     super.dispose();
   }
 
-  final _apiClient = ApiClient();
-
   @override
   Widget build(BuildContext context) {
-    bool isShow = context.select((RequestedExperimentsMV mv) => mv.isShow);
-
     final model = Provider.of<ExperimentParametersMV>(context);
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                height: 50.0,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(222, 222, 222, 1),
-                  borderRadius: BorderRadius.circular(30.0),
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                const SearchWidget(),
+                FutureBuilder(
+                  future: model.getAvailableExperiments(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<http.Response> snapshot) {
+                    if (snapshot.hasData) {
+                      var experiments = jsonDecode(snapshot.data!.body)['data'];
+                      // print(experiments);
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 32,
+                          ),
+                          experiments.isNotEmpty
+                              ? ListView.builder(
+                                  physics: const ScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: experiments.length,
+                                  itemBuilder: (context, index) {
+                                    var experiment = experiments[index];
+                                    return ExperimentWidget(
+                                        title: experiment['experimentName'],
+                                        description: experiment['description'],
+                                        creator: experiment['creator']
+                                            ['username'],
+                                        id: experiment['experimentId']
+                                        );
+                                  },
+                                )
+                              : const Text('No available experiments',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 18)),
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                          child: Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: CircularProgressIndicator(),
+                      ));
+                    }
+                  },
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Search by email',
-                          hintStyle: TextStyle(fontSize: 18),
-                          border: InputBorder.none,
-                        ),
-                        // onEditingComplete:() {
-                        //   // print(value);
-                        //   _apiClient.getExperimentsByEmail(_controller.text);
-                        // },
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.search, size: 30),
-                      onPressed: () async {
-                        // print(_controller.text);
-                        _apiClient.getExperimentsByEmail(_controller.text);
-                        //  var response = await BaseClient().getExperimentsByEmail(_controller.text);
-                        //  print(jsonDecode(response));
-                        Provider.of<RequestedExperimentsMV>(context,
-                                listen: false)
-                            .changeShowStatus();
-                        // widget.onSearch(_controller.text);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              // FutureBuilder(
-              //     future: model.getMyCreatedexperiments(),
-              //     builder: (BuildContext context,
-              //         AsyncSnapshot<http.Response> snapshot) {
-              //       var experiments = jsonDecode(snapshot.data!.body);
-              //       return Column(
-              //         children: [
-              //           const SizedBox(
-              //             height: 32,
-              //           ),
-              //           ListView.builder(
-              //             physics: const NeverScrollableScrollPhysics(),
-              //             shrinkWrap: true,
-              //             itemCount: experiments.length,
-              //             itemBuilder: (context, index) {
-              //               var experiment = MyCreatedExperiments.fromJson(
-              //                   experiments[index]);
-              //               return ExperimentWidget(
-              //                 title: experiment.experimentName,
-              //                 description: experiment.description,
-              //               );
-              //             },
-              //           )
-              //         ],
-              //       );
-              //     }),
-              isShow == true
-                  ? ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        return const JoinableCard();
-                      },
-                    )
-                  : const Text('No available experiments',
-                      style: TextStyle(color: Colors.grey, fontSize: 18))
-            ],
-          ),
-        ));
+              ],
+            )));
   }
 }

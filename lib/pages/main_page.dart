@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:senior_project/pages/profile/profile.dart';
 import 'package:senior_project/pages/feed-home/feed.dart';
+import 'package:senior_project/pages/providers/user_mv.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -10,7 +13,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final List<Widget> _pages = const [FeedPage(), MyProfile()];
+  final List<Widget> _pages = [
+    const FeedPage(),
+    const MyProfile(),
+  ];
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {

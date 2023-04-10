@@ -14,7 +14,7 @@ class NewExperimentPage extends StatefulWidget {
 }
 
 class _NewExperimentPageState extends State<NewExperimentPage> {
-  IsJoinable _currentChoice = IsJoinable.joinable;
+  int _selectedOption = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -49,24 +49,18 @@ class _NewExperimentPageState extends State<NewExperimentPage> {
                 _buildTextInput(
                     controller: model.descriptionController,
                     title: 'Description:'),
-                _buildTextInput(
-                    controller: model.wordsController,
-                    title: 'Enter a list of words:'),
+                _buildRadioButtons(context, model),
                 _buildTextInput(
                     controller: model.wordShowTimeController,
                     title: 'Word show time (in sec):'),
                 _buildTextInput(
                     controller: model.betweenWordTimeController,
                     title: 'Interval between showing words (in sec):'),
-                _buildRadioButtons(context, model),
                 const SizedBox(
                   height: 16,
                 ),
                 GestureDetector(
                     onTap: () async {
-                      print('new exp is creating');
-                      print(model.errorMessage);
-                      print(model.descriptionController.text);
                       model.createExperiment(context);
                     },
                     child: ButtonWidget(txt: 'Create')),
@@ -81,103 +75,205 @@ class _NewExperimentPageState extends State<NewExperimentPage> {
   Widget _buildRadioButtons(
       BuildContext context, ExperimentParametersMV model) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(
           height: 16,
         ),
+        const SizedBox(
+          height: 16,
+        ),
         const Text(
-          'Do you want participants to be able to find or join the given experiment?',
+          'Choose words by',
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                width: 130,
-                height: 50,
-                child: ListTile(
-                  title: const Text('Yes',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
-                  leading: Radio<IsJoinable>(
-                    value: IsJoinable.joinable,
-                    groupValue: _currentChoice,
-                    onChanged: (IsJoinable? value) {
-                      setState(() {
-                        _currentChoice = IsJoinable.joinable;
-                      });
-                      model.isJoinableExperiment = "True";
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 130,
-                height: 50,
-                child: ListTile(
-                  title: const Text('No',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
-                  leading: Radio<IsJoinable>(
-                    value: IsJoinable.notJoinable,
-                    groupValue: _currentChoice,
-                    onChanged: (IsJoinable? value) {
-                      setState(() {
-                        _currentChoice = IsJoinable.notJoinable;
-                      });
-                      model.isJoinableExperiment = "False";
-                    },
-                  ),
-                ),
-              ),
-            ],
+          // width: MediaQuery.of(context).size.width * 0.8,
+          child: ListTile(
+            title: const Text(
+              'Frequency and length',
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+            ),
+            leading: Radio(
+              value: 1,
+              groupValue: _selectedOption,
+              onChanged: (value) {
+                setState(() {
+                  _selectedOption = int.parse(value.toString());
+                });
+                model.selectedOption = int.parse(value.toString());
+              },
+            ),
           ),
         ),
+        SizedBox(
+          child: ListTile(
+            title: const Text(
+              'Randomize',
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+            ),
+            leading: Radio(
+              value: 2,
+              groupValue: _selectedOption,
+              onChanged: (value) {
+                setState(() {
+                  _selectedOption = int.parse(value.toString());
+                });
+                model.selectedOption = int.parse(value.toString());
+              },
+            ),
+          ),
+        ),
+        SizedBox(
+          child: ListTile(
+            title: const Text(
+              'Enter my own words',
+              style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+            ),
+            leading: Radio(
+              value: 3,
+              groupValue: _selectedOption,
+              onChanged: (value) {
+                setState(() {
+                  _selectedOption = int.parse(value.toString());
+                });
+                model.selectedOption = int.parse(value.toString());
+              },
+            ),
+          ),
+        ),
+        _selectedOption == 1
+            ? _buildFrequencyInput(model)
+            : _selectedOption == 2
+                ? _buildTextInput(
+                    controller: model.numberOfWordsController,
+                    title: 'Number of words:')
+                : _buildTextInput(
+                    controller: model.wordsController,
+                    title: 'Enter a list of words:'),
       ],
     );
   }
 
   Widget _buildTextInput(
       {required TextEditingController controller, required String title}) {
-    return SizedBox(
-      // color: Colors.red,
-      height: 100,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        Container(
+          height: 38,
+          margin: const EdgeInsets.only(bottom: 16),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 223, 221, 221),
+            borderRadius: BorderRadius.circular(10),
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          Container(
-            height: 38,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 223, 221, 221),
-              borderRadius: BorderRadius.circular(10),
+          child: TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.text,
+              style: GoogleFonts.livvic(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  fontSize: 22),
+              decoration: const InputDecoration(
+                filled: false,
+                contentPadding: EdgeInsets.only(left: 15, bottom: 15),
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+              )),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFrequencyInput(ExperimentParametersMV model) {
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 16,
             ),
-            child: TextFormField(
-                controller: controller,
-                keyboardType: TextInputType.text,
-                style: GoogleFonts.livvic(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    fontSize: 22),
-                decoration: const InputDecoration(
-                  filled: false,
-                  contentPadding: EdgeInsets.only(left: 15, bottom: 15),
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                )),
-          ),
-        ],
-      ),
+            _buildTextInput(
+                controller: model.numberOfWordsController,
+                title: 'Number of words:'),
+            const Text(
+              'Choose frequency of words in the range [3000 - 14000]',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            const Text(
+              'Lower limit',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              height: 38,
+              margin: const EdgeInsets.only(
+                bottom: 16,
+              ),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 223, 221, 221),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextFormField(
+                  controller: model.lowerFreqController,
+                  keyboardType: TextInputType.text,
+                  style: GoogleFonts.livvic(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontSize: 22),
+                  decoration: const InputDecoration(
+                    filled: false,
+                    contentPadding: EdgeInsets.only(left: 15, bottom: 15),
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                  )),
+            ),
+            const Text(
+              'Upper limit',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Container(
+              height: 38,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 223, 221, 221),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextFormField(
+                  controller: model.upperFreqController,
+                  keyboardType: TextInputType.text,
+                  style: GoogleFonts.livvic(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontSize: 22),
+                  decoration: const InputDecoration(
+                    filled: false,
+                    contentPadding: EdgeInsets.only(left: 15, bottom: 15),
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                  )),
+            ),
+          ],
+        )
+      ],
     );
   }
 }

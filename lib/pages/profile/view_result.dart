@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ViewResult extends StatelessWidget {
-  ViewResult({
+  const ViewResult({
     Key? key,
   }) : super(key: key);
 
