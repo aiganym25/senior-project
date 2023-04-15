@@ -1,3 +1,6 @@
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:senior_project/domain/session_data_providers.dart';
 import '../../models/experiment.dart';
@@ -31,15 +34,43 @@ class ExperimentParametersMV extends ChangeNotifier {
   final client = HttpClient();
   bool isSendRequest = false;
 
-  Future<void> sendRequest(int id) async{
+  Future<void> sendRequest(int id) async {
     final responseStatusCode = await _apiClient.sendRequest(id);
-    if(responseStatusCode == 200){
+    if (responseStatusCode == 200) {
       isSendRequest = true;
       notifyListeners();
     }
   }
 
+  Future<http.Response> getMyTakenExperiemnts() async {
+    var token = await SessionDataProvider().getSessionId();
+    return http.get(
+        Uri.parse(
+            'https://my-spring-app-sp.herokuapp.com/api/v2/experiment/UserTakenExperiments'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token'
+        });
+  }
 
+  Future<dynamic> viewResultsTakenExperiments(int id) async {
+    var token = await SessionDataProvider().getSessionId();
+    try {
+      final response = await http.get(
+          Uri.parse(
+              'https://my-spring-app-sp.herokuapp.com/api/v2/particpation/myTakenParticipation/$id'),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $token'
+          });
+        print(jsonDecode(response.body));
+        return (jsonDecode(response.body));
+    } catch (er) {
+      print(er);
+    }
+  }
 
   Future<http.Response> getMyCreatedexperiments() async {
     var token = await SessionDataProvider().getSessionId();
@@ -129,8 +160,8 @@ class ExperimentParametersMV extends ChangeNotifier {
           : selectedOption == 2
               ? await _apiClient
                   .createExperimentWithRandomWords(requestBodyRandomWords)
-              : await _apiClient
-                  .createExperimentWithEnterWords(requestBodyEnterWords.toJson());
+              : await _apiClient.createExperimentWithEnterWords(
+                  requestBodyEnterWords.toJson());
     } catch (er) {
       _errorMessage = 'Experiment creation failed, please try again!';
       print(er);

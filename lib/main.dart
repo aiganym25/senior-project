@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           ),
           home: const AuthenticationPage(),
           routes: {
-            '/view_results': (context) => ViewResult(),
+            '/view_results': (context) => const ViewResult(),
             '/home_page': (context) => AuthProvider(
                 model: AuthModel(), child: const AuthenticationPage()),
             '/my_created_experiments': (context) =>

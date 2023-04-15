@@ -12,7 +12,7 @@ class CreatedExperiment extends StatefulWidget {
   final String title;
   const CreatedExperiment({Key? key, required this.id, required this.title})
       : super(key: key);
-
+ 
   @override
   State<CreatedExperiment> createState() => _CreatedExperimentState();
 }
@@ -46,7 +46,8 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                     children: [
                       Expanded(
                         child: experiments.isNotEmpty
-                            ? SingleChildScrollView(
+                            ? 
+                            SingleChildScrollView(
                                 physics: const ScrollPhysics(),
                                 child: Column(
                                   children: [
