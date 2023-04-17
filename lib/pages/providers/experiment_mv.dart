@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -33,6 +32,139 @@ class ExperimentParametersMV extends ChangeNotifier {
 
   final client = HttpClient();
   bool isSendRequest = false;
+  // Map<String, dynamic> results = {};
+  List<dynamic> results = [];
+
+  Future<void> getListOfParticipants(int id) async {
+    final response = await _apiClient.getListOfParticipants(id);
+    if (response.statusCode == 200) {
+      results = jsonDecode(response.body)['data'];
+      notifyListeners();
+    }
+  }
+
+  Future<int> createExperiment(BuildContext context) async {
+    final title = titleExperimentController.text;
+    final description = descriptionController.text;
+
+    var betweenWordTime = 0.0;
+    var wordShowTime = 0.0;
+    if (betweenWordTimeController.text.isNotEmpty) {
+      betweenWordTime = double.parse(betweenWordTimeController.text);
+    }
+    if (wordShowTimeController.text.isNotEmpty) {
+      wordShowTime = double.parse(wordShowTimeController.text);
+    }
+    final inputWords = wordsController.text;
+    if (inputWords.isNotEmpty) {
+      words = inputWords.split(', ').map((word) => word.trim()).toList();
+      notifyListeners();
+    }
+    if (title.isEmpty ||
+        description.isEmpty ||
+        betweenWordTimeController.text.isEmpty ||
+        wordShowTimeController.text.isEmpty) {
+      _errorMessage = 'Please, complete all required fields';
+      notifyListeners();
+      // return 0;
+    }
+
+    _errorMessage = null;
+    notifyListeners();
+
+    var requestBodyEnterWords = NewExperiment(
+        experimentName: title,
+        words: words,
+        description: description,
+        betweenWordTime: betweenWordTime,
+        wordTime: wordShowTime,
+        isJoinable: isJoinableExperiment);
+
+    var requestBodyWithFreqLen = {
+      "experimentName": title,
+      "description": description,
+      "wordTime": wordShowTime,
+      "betweenWordTime": betweenWordTime,
+      "numberOfWords": numberOfWordsController.text,
+      "frequencyRange": [lowerFreqController.text, upperFreqController.text],
+      "lengthOfWords": lengthController.text,
+      "isJoinable": true
+    };
+
+    var requestBodyRandomWords = {
+      "experimentName": title,
+      "description": description,
+      "wordTime": wordShowTime,
+      "betweenWordTime": betweenWordTime,
+      "numberOfWords": numberOfWordsController.text,
+      "isJoinable": true
+    };
+
+    try {
+      var response = selectedOption == 1
+          ? await _apiClient.createExperimentByFreqLen(requestBodyWithFreqLen)
+          : selectedOption == 2
+              ? await _apiClient
+                  .createExperimentWithRandomWords(requestBodyRandomWords)
+              : await _apiClient.createExperimentWithEnterWords(
+                  requestBodyEnterWords.toJson());
+      // if (_errorMessage != null) {
+      //   notifyListeners();
+
+      // }
+
+      if (response.statusCode == 200) {
+        // Clear all text editing controllers
+        titleExperimentController.clear();
+        descriptionController.clear();
+        numberOfWordsController.clear();
+        wordShowTimeController.clear();
+        betweenWordTimeController.clear();
+        wordsController.clear();
+        lowerFreqController.clear();
+        upperFreqController.clear();
+        lengthController.clear();
+
+        // Reset other properties
+        _errorMessage = null;
+        notifyListeners();
+
+        Navigator.pop(context);
+      }
+
+      return response.statusCode;
+    } catch (er) {
+      _errorMessage = 'Experiment creation failed, please try again!';
+      throw Exception(er);
+    }
+
+    // Navigator.of(context).popUntil((route) => route.);
+    // Navigator.of(context).push(
+    //   MaterialPageRoute<void>(
+    //     builder: (BuildContext context) => const MainPage(),
+    //   ),
+    // );
+    // return 0;
+  }
+
+  Future<int> deleteExperimentById(int id) async {
+    final response = await _apiClient.deleteExperimentById(id);
+    // print(response.statusCode);
+
+    return response.statusCode;
+  }
+
+  Future<http.Response> getCreatedExpResultsById(int id) async {
+    var token = await SessionDataProvider().getSessionId();
+    return http.get(
+        Uri.parse(
+            'https://my-spring-app-sp.herokuapp.com/api/v2/experiment/myCreatedExperiments/id/$id'),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token'
+        });
+  }
 
   Future<void> sendRequest(int id) async {
     final responseStatusCode = await _apiClient.sendRequest(id);
@@ -65,8 +197,7 @@ class ExperimentParametersMV extends ChangeNotifier {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token'
           });
-        print(jsonDecode(response.body));
-        return (jsonDecode(response.body));
+      return (jsonDecode(response.body));
     } catch (er) {
       print(er);
     }
@@ -94,89 +225,5 @@ class ExperimentParametersMV extends ChangeNotifier {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token'
         });
-  }
-
-  Future<void> createExperiment(BuildContext context) async {
-    final title = titleExperimentController.text;
-    final description = descriptionController.text;
-    print('in create function');
-
-    var betweenWordTime = 0.0;
-    var wordShowTime = 0.0;
-    if (betweenWordTimeController.text.isNotEmpty) {
-      betweenWordTime = double.parse(betweenWordTimeController.text);
-    }
-    if (wordShowTimeController.text.isNotEmpty) {
-      wordShowTime = double.parse(wordShowTimeController.text);
-    }
-    final inputWords = wordsController.text;
-    if (inputWords.isNotEmpty) {
-      words = inputWords.split(', ').map((word) => word.trim()).toList();
-      notifyListeners();
-    }
-    if (title.isEmpty ||
-        description.isEmpty ||
-        betweenWordTimeController.text.isEmpty ||
-        wordShowTimeController.text.isEmpty) {
-      _errorMessage = 'Please, complete all required fields';
-      notifyListeners();
-      return;
-    }
-
-    _errorMessage = null;
-    notifyListeners();
-
-    var requestBodyEnterWords = NewExperiment(
-        experimentName: title,
-        words: words,
-        description: description,
-        betweenWordTime: betweenWordTime,
-        wordTime: wordShowTime,
-        isJoinable: isJoinableExperiment);
-
-    var requestBodyWithFreqLen = {
-      "experimentName": title,
-      "description": description,
-      "wordTime": wordShowTime,
-      "betweenWordTime": betweenWordTime,
-      "numberOfWords": numberOfWordsController.text,
-      "frequencyRange": [lowerFreqController.text, upperFreqController.text],
-      "lengthOfWords": 6,
-      "isJoinable": true
-    };
-
-    var requestBodyRandomWords = {
-      "experimentName": title,
-      "description": description,
-      "wordTime": wordShowTime,
-      "betweenWordTime": betweenWordTime,
-      "numberOfWords": numberOfWordsController.text,
-      "isJoinable": true
-    };
-
-    try {
-      var response = selectedOption == 1
-          ? await _apiClient.createExperimentByFreqLen(requestBodyWithFreqLen)
-          : selectedOption == 2
-              ? await _apiClient
-                  .createExperimentWithRandomWords(requestBodyRandomWords)
-              : await _apiClient.createExperimentWithEnterWords(
-                  requestBodyEnterWords.toJson());
-    } catch (er) {
-      _errorMessage = 'Experiment creation failed, please try again!';
-      print(er);
-    }
-    if (_errorMessage != null) {
-      notifyListeners();
-      return;
-    }
-    Navigator.pop(context);
-    Navigator.pop(context);
-    // Navigator.of(context).popUntil((route) => route.);
-    // Navigator.of(context).push(
-    //   MaterialPageRoute<void>(
-    //     builder: (BuildContext context) => const MainPage(),
-    //   ),
-    // );
   }
 }

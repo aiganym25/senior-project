@@ -14,8 +14,9 @@ class AuthModel extends ChangeNotifier {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final ageController = TextEditingController();
-  final genderController = TextEditingController();
-  final degreeController = TextEditingController();
+
+  String gender = ''; 
+  String degree = '';
 
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
@@ -29,7 +30,6 @@ class AuthModel extends ChangeNotifier {
     final password = passwordTextController.text;
     if (login.isEmpty || password.isEmpty) {
       _errorMessage = 'Fill the email and password';
-      print('something');
       notifyListeners();
       return;
     }
@@ -38,11 +38,9 @@ class AuthModel extends ChangeNotifier {
     notifyListeners();
 
     String? token;
-    dynamic? userInfo;
     try {
       token = await _apiClient.login(email: login, password: password);
-      userInfo = await _apiClient.getMyUserInfo(token);
-      print(userInfo);
+     
     } catch (er) {
       _errorMessage = 'Wrong email or password';
     }
@@ -57,10 +55,9 @@ class AuthModel extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    final userName = '${userInfo['data']['firstName']} ${userInfo['data']['lastName']}';
-    print(userName);
+
     await _sessionDataProvider.setSessionId(token);
-    await _sessionDataProvider.setUserName(userName);
+ 
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) => const MainPage(),
@@ -74,10 +71,7 @@ class AuthModel extends ChangeNotifier {
     final firstName = firstNameController.text;
     final lastName = lastNameController.text;
     final age = ageController.text;
-    final gender = genderController.text;
-    final degree = degreeController.text;
 
-    // print(login);
 
     if (login.isEmpty ||
         password.isEmpty ||
@@ -94,6 +88,7 @@ class AuthModel extends ChangeNotifier {
     _isAuthProgress = true;
     notifyListeners();
     String? token;
+
     try {
       token = await _apiClient.signUp(
           email: login,
@@ -120,13 +115,13 @@ class AuthModel extends ChangeNotifier {
     }
 
     await _sessionDataProvider.setSessionId(token);
+    
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) => const MainPage(),
       ),
     );
   }
-
 }
 
 class AuthProvider extends InheritedNotifier {

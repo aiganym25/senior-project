@@ -5,7 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
 
 class Result extends StatefulWidget {
-  const Result({Key? key, required this.words, required this.enteredWords, required this.id})
+  const Result(
+      {Key? key,
+      required this.words,
+      required this.enteredWords,
+      required this.id})
       : super(key: key);
   final List<String> enteredWords;
   final List<dynamic> words;
@@ -29,7 +33,7 @@ class _ResultState extends State<Result> {
     isCorrectList = List.filled(widget.enteredWords.length, false);
 
     for (int i = 0; i < widget.words.length; i++) {
-      if (widget.words.contains(widget.enteredWords[i])) {
+      if (widget.enteredWords.contains(widget.words[i])) {
         if (map[widget.enteredWords[i]] != 1) {
           isCorrectList[i] = true;
           correctWords++;
@@ -90,11 +94,11 @@ class _ResultState extends State<Result> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Row(
+                          child: Row( 
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.enteredWords[index],
+                                widget.words[index],
                                 style: GoogleFonts.livvic(
                                   fontSize: 25,
                                   fontWeight: FontWeight.w400,
@@ -111,12 +115,16 @@ class _ResultState extends State<Result> {
                     }),
               ),
               GestureDetector(
-                onTap: () {
-                  model.sendResults(widget.enteredWords, widget.id);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-
+                onTap: () async {
+                  final response =
+                      await model.sendResults(widget.enteredWords, widget.id, context);
+                  if (response.statusCode == 200) {
+                    setState(() {});
+                    ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Experiment is taken successfully')));
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

@@ -45,7 +45,6 @@ class _MainPageState extends State<MainPage> {
           currentIndex: _selectedIndex, //New
           onTap: (index) {
             setState(() {
-              // print(index);
               _selectedIndex = index;
             });
           },

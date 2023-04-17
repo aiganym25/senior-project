@@ -12,8 +12,8 @@ import '../../providers/request_mv.dart';
 import 'fill_in_page.dart';
 
 class AnimatedCardsPage extends StatefulWidget {
-  int id;
-  AnimatedCardsPage({Key? key, required this.id}) : super(key: key);
+  final int id;
+  const AnimatedCardsPage({Key? key, required this.id}) : super(key: key);
 
   @override
   State<AnimatedCardsPage> createState() => _AnimatedCardsPageState();
@@ -79,13 +79,9 @@ class _AnimatedCardsPageState extends State<AnimatedCardsPage>
                 // snapshot.connectionState == ConnectionState.done
                 if (snapshot.hasData) {
                   var experiment = jsonDecode(snapshot.data!.body)['data'];
-                  // print(experiment);
-                  // words = List.filled(experiment['words'].length, experiment['words'][0]);
                   final words = experiment['words'];
                   final betweenWordTime = experiment['betweenWordTime'];
-                  // print(betweenWordTime);
                   final wordTime = experiment['wordTime'];
-                  // print(wordTime.runtimeType);
                   return Column(children: [
                     Padding(
                       padding: EdgeInsets.only(top: 100.0.h),

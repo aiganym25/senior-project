@@ -103,7 +103,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: const Text('Additional information about the app',
+            content: const Text('This mobile app enables users to easily participate in experiments, manage participants, design experiments, and access real-time results and statistics. \n \n  In experiments, participants are presented with a sequence of words and asked to recall them, providing valuable insights into human memory. \n \n  Join us now and contribute to cutting-edge research in the field of memory studies!',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
             actions: [
               TextButton(

@@ -61,7 +61,20 @@ class _NewExperimentPageState extends State<NewExperimentPage> {
                 ),
                 GestureDetector(
                     onTap: () async {
-                      model.createExperiment(context);
+                      final statusCode = await model.createExperiment(context);
+
+                      if (statusCode == 200) {
+                        setState(() {});
+                        print('er');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Experiment is created successfully')));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Something gone wrong')));
+                      }
                     },
                     child: ButtonWidget(txt: 'Create')),
               ],
@@ -271,6 +284,8 @@ class _NewExperimentPageState extends State<NewExperimentPage> {
                     enabledBorder: InputBorder.none,
                   )),
             ),
+            _buildTextInput(
+                controller: model.lengthController, title: 'Length of words in the range [3 - 6]:')
           ],
         )
       ],

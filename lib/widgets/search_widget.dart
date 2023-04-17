@@ -24,19 +24,11 @@ class SearchWidget extends StatelessWidget {
                 hintStyle: TextStyle(fontSize: 18),
                 border: InputBorder.none,
               ),
-              // onEditingComplete:() {
-              //   // print(value);
-              //   _apiClient.getExperimentsByEmail(_controller.text);
-              // },
             ),
           ),
           IconButton(
             icon: const Icon(Icons.search, size: 30),
             onPressed: () {
-              // Provider.of<RequestedExperimentsMV>(context,
-              //         listen: false)
-              //     .changeShowStatus();
-              // widget.onSearch(_controller.text);
             },
           ),
         ],

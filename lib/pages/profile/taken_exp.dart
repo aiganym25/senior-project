@@ -56,13 +56,14 @@ class _TakenExperimentsState extends State<TakenExperiments> {
                                         itemCount: experiments.length,
                                         itemBuilder: (context, index) {
                                           var experiment = experiments[index];
-                                          print(experiment);
                                           return TakenExperimentWidget(
                                               experiment: experiment);
                                         }),
                                   )
                                 : const Center(
-                                    child: Text('No created experiments',
+                                    child: Text(
+                                        'You have not taken any experiment',
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 20)),
                                   ),

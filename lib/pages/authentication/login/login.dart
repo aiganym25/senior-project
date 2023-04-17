@@ -147,7 +147,6 @@ class _AuthButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => {
         model?.auth(context),
-        // print(model?.loginTextController.text),
       },
       child: Container(
         padding: const EdgeInsets.symmetric(

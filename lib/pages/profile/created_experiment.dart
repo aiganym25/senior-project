@@ -60,13 +60,11 @@ class _CreatedExperimentState extends State<CreatedExperiment> {
                                       shrinkWrap: true,
                                       itemCount: experiments.length,
                                       itemBuilder: (context, index) {
-                                        // print(experiments);
                                         var experiment =
                                            experiments[index];
+                                         
                                         return MyExperimentWidget(
-                                          experimentId: experiment['experimentId'],
-                                          title: experiment['experimentName'],
-                                          description: experiment['description'],
+                                          experiment : experiment
                                         );
                                       },
                                     )

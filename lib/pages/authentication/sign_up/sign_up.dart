@@ -4,8 +4,28 @@ import 'package:senior_project/pages/authentication/auth_model.dart';
 import 'package:senior_project/widgets/already_have_acc.dart';
 import 'package:senior_project/pages/authentication/login/login.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  static const List<String> _genderOptions = ['Female', 'Male', 'Other'];
+
+  static const List<String> _degreeOptions = [
+    'Less than high school diploma',
+    'High school diploma',
+    'Some college, no degree',
+    "Bachelor's degree",
+    "Master's degree",
+    "Doctoral degree"
+  ];
+
+  String? _selectedGender;
+
+  String? _selectedDegree;
 
   @override
   Widget build(BuildContext context) {
@@ -65,16 +85,63 @@ class SignUp extends StatelessWidget {
                     keyboardType: TextInputType.name,
                   ),
                   const SizedBox(height: 16),
-                  _buildInputField(
-                    hintText: 'Gender',
-                    controller: model?.genderController,
-                    keyboardType: TextInputType.name,
+                  SizedBox(
+                    child: DropdownButtonFormField<String>(
+                      hint: const Text("Gender"),
+                      value: _selectedGender,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedGender = newValue!;
+                        });
+                        model!.gender = newValue!;
+                      },
+                      items: _genderOptions
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      decoration: const InputDecoration(
+                        filled: true,
+                        contentPadding: EdgeInsets.only(left: 15),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  _buildInputField(
-                    hintText: 'Degree',
-                    controller: model?.degreeController,
-                    keyboardType: TextInputType.name,
+                  SizedBox(
+                    child: DropdownButtonFormField<String>(
+                      hint: const Text("Academic degree level"),
+                      value: _selectedDegree,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selectedDegree = newValue!;
+                        });
+                        model!.degree = newValue!;
+                      },
+                      items: _degreeOptions
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      decoration: const InputDecoration(
+                        filled: true,
+                        contentPadding: EdgeInsets.only(left: 15),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   _buildInputField(
@@ -96,12 +163,12 @@ class SignUp extends StatelessWidget {
                   AlreadyHaveAnAccountCheck(
                     login: false,
                     press: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const Login();
-                          },
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => AuthProvider(
+                            model: AuthModel(),
+                            child: const Login(),
+                          ),
                         ),
                       );
                     },

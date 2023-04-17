@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
 import 'package:http/http.dart' as http;
 
+import '../../widgets/user_info_widget.dart';
+
 class MyRequests extends StatefulWidget {
   final String title;
   final int id;
@@ -18,8 +20,6 @@ class MyRequests extends StatefulWidget {
 class _MyRequestsState extends State<MyRequests> {
   @override
   Widget build(BuildContext context) {
-    bool isAccepted =
-        context.select((RequestedExperimentsMV mv) => mv.isAccepted);
     final model = Provider.of<RequestedExperimentsMV>(context);
 
     return Scaffold(
@@ -63,133 +63,140 @@ class _MyRequestsState extends State<MyRequests> {
                                     itemCount: requests.length,
                                     itemBuilder: (context, index) {
                                       final request = requests[index];
-                                      return AnimatedOpacity(
-                                        opacity: !isAccepted ? 1.0 : 0.0,
-                                        duration:
-                                            const Duration(milliseconds: 200),
-                                        curve: Curves.easeInOut,
-                                        child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 16, vertical: 16),
-                                            margin: const EdgeInsets.only(
-                                                bottom: 20),
-                                            width: double.infinity,
-                                            // height: 150,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 0.25),
-                                                    offset: Offset(4.0, 4.0),
-                                                    blurRadius: 4.0,
-                                                    spreadRadius: 3),
-                                              ],
-                                              border: Border.all(
-                                                color: const Color.fromRGBO(
-                                                    0, 0, 0, 0.25),
-                                                width: 1.0,
-                                              ),
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(15)),
+                                      return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 16),
+                                          margin:
+                                              const EdgeInsets.only(bottom: 20),
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                  color: Color.fromRGBO(
+                                                      0, 0, 0, 0.25),
+                                                  offset: Offset(4.0, 4.0),
+                                                  blurRadius: 4.0,
+                                                  spreadRadius: 3),
+                                            ],
+                                            border: Border.all(
+                                              color: const Color.fromRGBO(
+                                                  0, 0, 0, 0.25),
+                                              width: 1.0,
                                             ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  request['participant']
-                                                      ['userEmail'],
-                                                  style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black),
-                                                ),
-                                                const SizedBox(
-                                                  height: 32,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        model.sendAcceptRequest(
-                                                            request[
-                                                                'participationId']);
-                                                      },
-                                                      child: Container(
-                                                        width: 100,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 15),
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          color: Color.fromRGBO(
-                                                              0, 183, 152, 1),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(15),
-                                                          ),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(15)),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              UserInfo(
+                                                  label: 'Full name',
+                                                  value:
+                                                      '${request['participant']['firstName']} ${request['participant']['lastName']}'),
+                                              UserInfo(
+                                                  label: 'Email',
+                                                  value: request['participant']
+                                                      ['userEmail']),
+                                              UserInfo(
+                                                  label: 'Degree',
+                                                  value:
+                                                      request['participant']
+                                                          ['degree']),
+                                              UserInfo(
+                                                  label: 'Gender',
+                                                  value:
+                                                      request['participant']
+                                                          ['gender']),
+                                              UserInfo(
+                                                  label: 'Age',
+                                                  value: request['participant']
+                                                          ['age']
+                                                      .toString()),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      model.sendAcceptRequest(
+                                                          request[
+                                                              'participationId']);
+                                                      setState(() {});
+                                                    },
+                                                    child: Container(
+                                                      width: 100,
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 15),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Color.fromRGBO(
+                                                            0, 183, 152, 1),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(15),
                                                         ),
-                                                        child: const Center(
-                                                          child: Text(
-                                                            "Accept",
-                                                            style: TextStyle(
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
+                                                      ),
+                                                      child: const Center(
+                                                        child: Text(
+                                                          "Accept",
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.white),
                                                         ),
                                                       ),
                                                     ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        model.sendRejectRequest(
-                                                            request[
-                                                                'participationId']);
-                                                      },
-                                                      child: Container(
-                                                        width: 100,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 15),
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          color: Color.fromRGBO(
-                                                              178, 2, 2, 1),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(15),
-                                                          ),
-                                                        ),
-                                                        child: const Center(
-                                                          child: Text(
-                                                            "Reject",
-                                                            style: TextStyle(
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      model.sendRejectRequest(
+                                                          request[
+                                                              'participationId']);
+                                                      setState(() {});
+                                                    },
+                                                    child: Container(
+                                                      width: 100,
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 15),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Color.fromRGBO(
+                                                            178, 2, 2, 1),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(15),
                                                         ),
                                                       ),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            )),
-                                      );
+                                                      child: const Center(
+                                                        child: Text(
+                                                          "Reject",
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ));
                                     },
                                   )
                                 ],
@@ -213,3 +220,4 @@ class _MyRequestsState extends State<MyRequests> {
         ));
   }
 }
+

@@ -27,8 +27,7 @@ class _RequestCardState extends State<RequestCard> {
     final status = widget.experiment['status'] == 'PENDING'
         ? 'in progress'
         : (widget.experiment['status'] == 'JOINED' ? 'accepted' : 'rejected');
-    // print('statuuuus');
-    // print(widget.status);
+
 
     widget.experiment['status'] == 'JOINED';
     return GestureDetector(
@@ -60,8 +59,6 @@ class _RequestCardState extends State<RequestCard> {
                       child: const Text('Yes'),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        // print(double.parse(
-                        //     widget.experiment['experiment']['experimentId']));
                         Navigator.push(
                           context,
                           MaterialPageRoute(

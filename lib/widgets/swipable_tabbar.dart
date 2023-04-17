@@ -14,7 +14,7 @@ class _SwipableTabbarState extends State<SwipableTabbar>
   late TabController _controller;
 
   late List<Widget> tabs = [
-    const Text("Joinable"),
+    const Text("Available"),
     const Text("Requests"),
   ];
 

@@ -7,12 +7,9 @@ import '../../domain/session_data_providers.dart';
 import '../../repo/api_client.dart';
 
 class RequestedExperimentsMV extends ChangeNotifier {
-  bool isShow = false;
-  bool isAccepted = false;
-
   final _apiClient = ApiClient();
 
-  Future<void> sendResults(List<String> words, id) async {
+  Future<dynamic> sendResults(List<String> words, id, BuildContext context) async {
     Map<String, dynamic> map = {'participantResponseList': words};
     var token = await SessionDataProvider().getSessionId();
     final url =
@@ -26,9 +23,13 @@ class RequestedExperimentsMV extends ChangeNotifier {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token'
       });
-      print('0');
-      print(response.statusCode);
-      print('printed');
+      print('rpint');
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+      return response;
     } catch (er) {
       print(er);
     }
@@ -68,9 +69,6 @@ class RequestedExperimentsMV extends ChangeNotifier {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token'
       });
-      isAccepted = true;
-      notifyListeners();
-      print(response.statusCode);
     } catch (er) {
       print(er);
     }
@@ -86,8 +84,6 @@ class RequestedExperimentsMV extends ChangeNotifier {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token'
       });
-      print(response.statusCode);
-      isAccepted = true;
       notifyListeners();
     } catch (er) {
       print(er);

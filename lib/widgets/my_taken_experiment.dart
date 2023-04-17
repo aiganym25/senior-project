@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/feed-home/experiment/result_page.dart';
+import '../pages/profile/taken_view_result.dart';
 import '../pages/providers/experiment_mv.dart';
 
 class TakenExperimentWidget extends StatelessWidget {
@@ -15,9 +18,10 @@ class TakenExperimentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<ExperimentParametersMV>(context);
+    // print(experiment);
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        margin: const EdgeInsets.symmetric(vertical: 16),
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -38,6 +42,7 @@ class TakenExperimentWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ${request['participant']['firstName']} ${request['participant']['lastName']}
             Text(
               experiment['experimentName'],
               style: const TextStyle(
@@ -66,17 +71,49 @@ class TakenExperimentWidget extends StatelessWidget {
                 ],
               ),
             ),
+
             const SizedBox(
-              height: 16,
+              height: 8,
+            ),
+            RichText(
+              text: TextSpan(
+                text: 'Full name: ',
+                style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                    text:
+                        "${experiment['creator']['firstName']} ${experiment['creator']['lastName']}",
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 8,
             ),
             GestureDetector(
-              onTap: () async{
-                final response = await model.viewResultsTakenExperiments(experiment['experimentId']);
-                
+              onTap: () async {
+                final response = await model
+                    .viewResultsTakenExperiments(experiment['experimentId']);
+                List<dynamic> words = response['data']['experiment']['words'];
+                List<dynamic> enteredWords =
+                    response['data']['participantResults'];
+                final experimentForOverallResults = response['data']['experiment'];
+                // print(response);
+
+                // final totalResults = await model.getCreatedExpResultsById(experiment['experimentId']);
+                // final decoded = jsonDecode(totalResults.body);
+                // print(decoded);
                 Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        Result(id: 1 , words: response['data']['experiment']['words'], enteredWords: response['data']['participantResults']),
+                  MaterialPageRoute<void>( 
+                    builder: (BuildContext context) => TakenViewResult(
+                        words: words, enteredWords: enteredWords, experiment: experimentForOverallResults ),
                   ),
                 );
               },

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:senior_project/pages/providers/request_mv.dart';
-
+import '../pages/profile/created_view_result.dart';
 import '../pages/profile/my_request.dart';
+import '../pages/providers/experiment_mv.dart';
 
 class MyExperimentWidget extends StatefulWidget {
-  int experimentId;
-  String title;
-  String description;
-  MyExperimentWidget({Key? key, required this.experimentId, required this.title, required this.description})
+  final dynamic experiment;
+  const MyExperimentWidget({Key? key, required this.experiment})
       : super(key: key);
 
   @override
@@ -26,22 +24,24 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
   void initState() {
     super.initState();
 
-    if (widget.description.length > 50) {
-      firstHalf = widget.description.substring(0, 50);
-      secondHalf = widget.description.substring(50, widget.description.length);
+    if (widget.experiment['description'].length > 50) {
+      firstHalf = widget.experiment['description'].substring(0, 50);
+      secondHalf = widget.experiment['description']
+          .substring(50, widget.experiment['description'].length);
     } else {
-      firstHalf = widget.description;
+      firstHalf = widget.experiment['description'];
       secondHalf = "";
     }
   }
 
+  bool isDeleted = false;
+
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
+    final model = Provider.of<ExperimentParametersMV>(context);
+    return Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         margin: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
-        // width: MediaQuery.of(context).size.width * 0.1,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: const [
@@ -65,76 +65,57 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.title,
+                  widget.experiment['experimentName'],
                   style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: Colors.black),
                 ),
                 GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: SizedBox(
-                                height: 150.h,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text(
-                                      'Number of words: 10',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      'Word show time: 1.5 sec',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      'The length of words: 3',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      'Frequency of words: high',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                  ],
-                                ),
+                    onTap: () async {
+                      // Show confirmation dialog
+                      bool confirmed = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Delete Experiment'),
+                            content: const Text(
+                                'Are you sure you want to delete this experiment?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(false);
+                                },
                               ),
-                              actions: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    textStyle:
-                                        Theme.of(context).textTheme.labelLarge,
-                                  ),
-                                  child: const Text('Close'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
+                              TextButton(
+                                child: const Text('Delete'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(true);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      if (confirmed == true) {
+                        // Call the deleteExperimentById method and update the UI
+                        final statusCode = await model.deleteExperimentById(
+                            widget.experiment['experimentId']);
+                        if (statusCode == 200) {
+                          setState(() {});
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text('Experiment deleted successfully')));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Something gone wrong')));
+                        }
+                      }
                     },
-                    child: const Icon(Icons.info, size: 30)),
+                    child: const Icon(Icons.delete, size: 30)),
               ],
             ),
             const SizedBox(
@@ -177,7 +158,16 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/view_results');
+                    model.getListOfParticipants(widget.experiment['experimentId']);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return CreatedViewResult(
+                              id: widget.experiment['experimentId']);
+                        },
+                      ),
+                    );
                   },
                   child: Container(
                     width: 150,
@@ -207,7 +197,9 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
                         builder: (context) {
                           return ChangeNotifierProvider<RequestedExperimentsMV>(
                             create: (_) => RequestedExperimentsMV(),
-                            child:  MyRequests(title: widget.title, id: widget.experimentId),
+                            child: MyRequests(
+                                title: widget.experiment['experimentName'],
+                                id: widget.experiment['experimentId']),
                           );
                         },
                       ),

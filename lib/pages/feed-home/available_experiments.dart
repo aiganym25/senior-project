@@ -37,52 +37,49 @@ class _AvailableExperimentsState extends State<AvailableExperiments> {
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              children: [
-                const SearchWidget(),
-                FutureBuilder(
-                  future: model.getAvailableExperiments(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<http.Response> snapshot) {
-                    if (snapshot.hasData) {
-                      var experiments = jsonDecode(snapshot.data!.body)['data'];
-                      // print(experiments);
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 32,
+            child: FutureBuilder(
+              future: model.getAvailableExperiments(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<http.Response> snapshot) {
+                if (snapshot.hasData) {
+                  var experiments = jsonDecode(snapshot.data!.body)['data'];
+                  // print(experiments);
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      experiments.isNotEmpty
+                          ? ListView.builder(
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: experiments.length,
+                              itemBuilder: (context, index) {
+                                var experiment = experiments[index];
+                                return ExperimentWidget(
+                                    title: experiment['experimentName'],
+                                    description: experiment['description'],
+                                    creator: experiment['creator']
+                                        ['username'],
+                                    id: experiment['experimentId']
+                                    );
+                              },
+                            )
+                          : const Center(
+                            child: Text('No available experiments',
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 18)),
                           ),
-                          experiments.isNotEmpty
-                              ? ListView.builder(
-                                  physics: const ScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: experiments.length,
-                                  itemBuilder: (context, index) {
-                                    var experiment = experiments[index];
-                                    return ExperimentWidget(
-                                        title: experiment['experimentName'],
-                                        description: experiment['description'],
-                                        creator: experiment['creator']
-                                            ['username'],
-                                        id: experiment['experimentId']
-                                        );
-                                  },
-                                )
-                              : const Text('No available experiments',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 18)),
-                        ],
-                      );
-                    } else {
-                      return const Center(
-                          child: Padding(
-                        padding: EdgeInsets.only(top: 50),
-                        child: CircularProgressIndicator(),
-                      ));
-                    }
-                  },
-                ),
-              ],
+                    ],
+                  );
+                } else {
+                  return const Center(
+                      child: Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: CircularProgressIndicator(),
+                  ));
+                }
+              },
             )));
   }
 }
