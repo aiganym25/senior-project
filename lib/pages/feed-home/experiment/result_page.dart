@@ -34,17 +34,22 @@ class _ResultState extends State<Result> {
 
     for (int i = 0; i < widget.words.length; i++) {
       if (widget.enteredWords.contains(widget.words[i])) {
-        if (map[widget.enteredWords[i]] != 1) {
-          isCorrectList[i] = true;
-          correctWords++;
-        } else {
-          isCorrectList[i] = false;
-        }
-        map[widget.enteredWords[i]] = map[widget.enteredWords[i]]! + 1;
+        isCorrectList[i] = true;
+        correctWords++;
       } else {
         isCorrectList[i] = false;
       }
     }
+
+    // counts = List.filled(widget.enteredWords.length, 0);
+    // map = Map.fromIterables(widget.enteredWords, counts);
+    // isCorrectList = List.filled(widget.enteredWords.length, false);
+
+    // for (int i = 0; i < widget.enteredWords.length; i++) {
+    //   if (widget.enteredWords[i] == 1) {
+    //     correctWords++;
+    //   }
+    // }
     super.initState();
   }
 
@@ -94,7 +99,7 @@ class _ResultState extends State<Result> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Row( 
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -102,12 +107,12 @@ class _ResultState extends State<Result> {
                                 style: GoogleFonts.livvic(
                                   fontSize: 25,
                                   fontWeight: FontWeight.w400,
-                                  color: isCorrectList[index] == true
+                                  color: isCorrectList[index]== true
                                       ? Colors.black
                                       : Colors.red,
                                 ),
                               ),
-                              isCorrectList[index] == true
+                              isCorrectList[index]== true
                                   ? Image.asset("assets/correct.png")
                                   : Image.asset("assets/incorrect.png"),
                             ],
@@ -116,14 +121,12 @@ class _ResultState extends State<Result> {
               ),
               GestureDetector(
                 onTap: () async {
-                  final response =
-                      await model.sendResults(widget.enteredWords, widget.id, context);
+                  final response = await model.sendResults(
+                      widget.enteredWords, widget.id, context);
                   if (response.statusCode == 200) {
                     setState(() {});
-                    ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'Experiment is taken successfully')));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Experiment is taken successfully')));
                   }
                 },
                 child: Container(

@@ -80,16 +80,14 @@ class _TakenViewResultState extends State<TakenViewResult> {
                     itemBuilder: (context, index) {
                       return Container(
                           margin: const EdgeInsets.only(bottom: 32),
-                          padding:
-                              const EdgeInsets.only(left: 10, right: 10),
+                          padding: const EdgeInsets.only(left: 10, right: 10),
                           height: 38,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 widget.words[index],
@@ -108,7 +106,6 @@ class _TakenViewResultState extends State<TakenViewResult> {
                           ));
                     }),
                 ExpandableContainer(
-                
                     title: 'Overall results of the experiment',
                     body: Column(
                       children: [
@@ -126,8 +123,8 @@ class _TakenViewResultState extends State<TakenViewResult> {
                               color: const Color.fromRGBO(0, 0, 0, 0.25),
                               width: 1.0,
                             ),
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(15)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
                             gradient: const LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -151,25 +148,21 @@ class _TakenViewResultState extends State<TakenViewResult> {
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             content: const Text(
-                                                'This graph displays the frequency at which each word used in the experiment was successfully recalled by participants.\n\nThe y-axis represents the index of each word in the original array, while the x-axis shows the number of times each word was successfully recalled',
+                                                'This graph displays the frequency at which each word used in the experiment was successfully recalled by participants.\n\nThe x-axis represents the index of each word in the original array, while the y-axis shows the number of times each word was successfully recalled',
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontWeight:
                                                         FontWeight.w400)),
                                             actions: [
                                               TextButton(
-                                                style:
-                                                    TextButton.styleFrom(
-                                                  textStyle:
-                                                      Theme.of(context)
-                                                          .textTheme
-                                                          .labelLarge,
+                                                style: TextButton.styleFrom(
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .labelLarge,
                                                 ),
-                                                child:
-                                                    const Text('Close'),
+                                                child: const Text('Close'),
                                                 onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop();
+                                                  Navigator.of(context).pop();
                                                 },
                                               ),
                                             ],
@@ -182,8 +175,7 @@ class _TakenViewResultState extends State<TakenViewResult> {
                                           color: Colors.black, size: 30)),
                                 ),
                                 LineChart(
-                                    y: widget
-                                        .experiment['overallResults'],
+                                    y: widget.experiment['overallResults'],
                                     x: widget.experiment['words']),
                                 const SizedBox(height: 10),
                               ],
@@ -201,36 +193,52 @@ class _TakenViewResultState extends State<TakenViewResult> {
                         const SizedBox(
                           height: 8,
                         ),
-                        SizedBox(
-                          height: 40,
-                          child: Wrap(
-                            direction: Axis.horizontal,
-                            children: List.generate(
-                              widget.experiment['words'].length,
-                              (index) => index !=
-                                      widget.experiment['words'].length -
-                                          1
-                                  ? Text(
-                                      '${widget.experiment['words'][index]}, ',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                      ),
-                                    )
-                                  : Text(
-                                      '${widget.experiment['words'][index]}',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                      ),
-                                    ),
+                        // SizedBox(
+                        //   height: 40,
+                        //   child: Wrap(
+                        //     direction: Axis.horizontal,
+                        //     children: List.generate(
+                        //       widget.experiment['words'].length,
+                        //       (index) => index !=
+                        //               widget.experiment['words'].length -
+                        //                   1
+                        //           ? Text(
+                        //               '${widget.experiment['words'][index]}, ',
+                        //               style: const TextStyle(
+                        //                 fontWeight: FontWeight.w400,
+                        //                 fontSize: 16,
+                        //               ),
+                        //             )
+                        //           : Text(
+                        //               '${widget.experiment['words'][index]}',
+                        //               style: const TextStyle(
+                        //                 fontWeight: FontWeight.w400,
+                        //                 fontSize: 16,
+                        //               ),
+                        //             ),
+                        //     ),
+                        //   ),
+                        // ),
+                        DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Word Index')),
+                            DataColumn(label: Text('Word')),
+                          ],
+                          rows: List<DataRow>.generate(
+                            widget.experiment['words'].length,
+                            (index) => DataRow(
+                              cells: [
+                                DataCell(Text(index.toString())),
+                                DataCell(Text(widget.experiment['words'][index])),
+                              ],
                             ),
                           ),
-                        ),
+                        )
                       ],
                     )),
-                
-                const SizedBox(height: 32,),
+                const SizedBox(
+                  height: 32,
+                ),
                 GestureDetector(
                   onTap: () {
                     // model.sendResults(widget.enteredWords, widget.id);

@@ -13,36 +13,39 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color.fromRGBO(248, 180, 1, 1),
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
-                child: const Text(
-                  'Experiments',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontFamily: 'Sansation',
-                      fontWeight: FontWeight.w800),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).focusedChild?.unfocus(),
+      child: Scaffold(
+          backgroundColor: const Color.fromRGBO(248, 180, 1, 1),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+                  child: const Text(
+                    'Experiments',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontFamily: 'Sansation',
+                        fontWeight: FontWeight.w800),
+                  ),
                 ),
-              ),
-              const Positioned(
-                top: 70,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                child: SwipableTabbar(childrens: [
-                  AvailableExperiments(),
-                  RequestedExperimentPage()
-                ]),
-              ),
-            ],
-          ),
-        ));
+                const Positioned(
+                  top: 70,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  child: SwipableTabbar(childrens: [
+                    AvailableExperiments(),
+                    RequestedExperimentPage()
+                  ]),
+                ),
+              ],
+            ),
+          )),
+    );
   }
 }

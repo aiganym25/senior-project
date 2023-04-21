@@ -15,6 +15,8 @@ class ExperimentParametersMV extends ChangeNotifier {
   final betweenWordTimeController = TextEditingController();
   final wordsController = TextEditingController();
 
+  final searchController = TextEditingController();
+
   final lowerFreqController = TextEditingController();
   final upperFreqController = TextEditingController();
   final lengthController = TextEditingController();

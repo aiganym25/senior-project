@@ -71,51 +71,67 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
                       fontWeight: FontWeight.w600,
                       color: Colors.black),
                 ),
-                GestureDetector(
-                    onTap: () async {
-                      // Show confirmation dialog
-                      bool confirmed = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Delete Experiment'),
-                            content: const Text(
-                                'Are you sure you want to delete this experiment?'),
-                            actions: [
-                              TextButton(
-                                child: const Text('Cancel'),
-                                onPressed: () {
-                                  Navigator.of(context).pop(false);
-                                },
-                              ),
-                              TextButton(
-                                child: const Text('Delete'),
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      if (confirmed == true) {
-                        // Call the deleteExperimentById method and update the UI
-                        final statusCode = await model.deleteExperimentById(
-                            widget.experiment['experimentId']);
-                        if (statusCode == 200) {
-                          setState(() {});
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text('Experiment deleted successfully')));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Something gone wrong')));
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+
+                        
+
+                      },
+                      child: const Padding(
+                        padding:  EdgeInsets.only(right: 10),
+                        child: Icon(Icons.edit, size: 30),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        // Show confirmation dialog
+                        bool confirmed = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Delete Experiment'),
+                              content: const Text(
+                                  'Are you sure you want to delete this experiment?'),
+                              actions: [
+                                TextButton(
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Delete'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        if (confirmed == true) {
+                          // Call the deleteExperimentById method and update the UI
+                          final statusCode = await model.deleteExperimentById(
+                              widget.experiment['experimentId']);
+                          if (statusCode == 200) {
+                            setState(() {});
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('Experiment deleted successfully')));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Something gone wrong')));
+                          }
                         }
-                      }
-                    },
-                    child: const Icon(Icons.delete, size: 30)),
+                      },
+                      child: const Icon(Icons.delete, size: 30),
+                    ),
+                  ],
+                ),
               ],
             ),
             const SizedBox(
@@ -158,7 +174,8 @@ class _MyExperimentWidgetState extends State<MyExperimentWidget> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    model.getListOfParticipants(widget.experiment['experimentId']);
+                    model.getListOfParticipants(
+                        widget.experiment['experimentId']);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

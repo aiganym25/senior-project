@@ -51,6 +51,7 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                     AsyncSnapshot<http.Response> snapshot) {
                   if (snapshot.hasData) {
                     var results = jsonDecode(snapshot.data!.body)['data'];
+
                     final len = results['words'].length;
                     final wordShowTime = results['wordTime'];
                     final betweenWords = results['betweenWordTime'];
@@ -58,9 +59,12 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                     final freqRange = results['frequencyRange'];
                     // print(results);
                     final participantCount = results['participantCount'];
-                    // print(results);
+                    print(results);
                     // model.getListOfParticipants(results['experimentId']);
                     // print(model.results);
+                    // final age = results
+                   
+                    
                     return SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +132,18 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                           const SizedBox(height: 32),
                           participantCount != 0
                               ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    const Padding(
+                                      padding:  EdgeInsets.only(left: 8.0),
+                                      child:  Text(
+                                        "Avarage age of participants: 22 ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 17),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 32),
                                     ExpandableContainer(
                                         title:
                                             'Recall Frequency of Experiment Words Plotted by Word Index',
@@ -183,7 +198,7 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                                                                     context) {
                                                               return AlertDialog(
                                                                 content: const Text(
-                                                                    'This graph displays the frequency at which each word used in the experiment was successfully recalled by participants.\n\nThe y-axis represents the index of each word in the original array, while the x-axis shows the number of times each word was successfully recalled',
+                                                                    'This graph displays the frequency at which each word used in the experiment was successfully recalled by participants.\n\nThe x-axis represents the index of each word in the original array, while the y-axis shows the number of times each word was successfully recalled',
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             18,
@@ -232,46 +247,25 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                                             const SizedBox(
                                               height: 20,
                                             ),
-                                            const Text(
-                                              'A list of words used in this experiment: ',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18),
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            SizedBox(
-                                              height: 40,
-                                              child: Wrap(
-                                                direction: Axis.horizontal,
-                                                children: List.generate(
-                                                  results['words'].length,
-                                                  (index) => index !=
-                                                          results['words']
-                                                                  .length -
-                                                              1
-                                                      ? Text(
-                                                          '${results['words'][index]}, ',
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 16,
-                                                          ),
-                                                        )
-                                                      : Text(
-                                                          '${results['words'][index]}',
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 16,
-                                                          ),
-                                                        ),
+                                            DataTable(
+                                              columns: const [
+                                                DataColumn(
+                                                    label: Text('Word Index')),
+                                                DataColumn(label: Text('Word')),
+                                              ],
+                                              rows: List<DataRow>.generate(
+                                                results["words"].length,
+                                                (index) => DataRow(
+                                                  cells: [
+                                                    DataCell(
+                                                        Text(index.toString())),
+                                                    DataCell(Text(
+                                                        results["words"]
+                                                            [index])),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
+                                            )
                                           ],
                                         )),
                                     const SizedBox(height: 32),
@@ -283,9 +277,16 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                                         )),
                                     const SizedBox(height: 32),
                                     ExpandableContainer(
+                                        title:
+                                            'Participants distribution by degree',
+                                        body: DegreeChart(
+                                          participants: participants,
+                                        )),
+                                    const SizedBox(height: 32),
+                                    ExpandableContainer(
                                       title: 'A list of participants',
                                       body: DataTable(
-                                          dataRowHeight: 120,
+                                          dataRowHeight: 150,
                                           columns: const [
                                             DataColumn(label: Text('Name')),
                                             DataColumn(
@@ -309,7 +310,7 @@ class _CreatedViewResultState extends State<CreatedViewResult> {
                                                           ['username'],
                                                       size: 15),
                                                   UserInfo(
-                                                      label: "Gender",
+                                                      label: "Age",
                                                       value: el['participant']
                                                               ['age']
                                                           .toString(),
@@ -417,6 +418,7 @@ class GenderChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(participants);
     final maleCount = participants.fold(
         0,
         (count, participant) => count +=
@@ -461,15 +463,15 @@ class GenderChart extends StatelessWidget {
         series: <CircularSeries>[
           // Create pie series
           PieSeries<PieChartData, String>(
-            dataSource: chartData,
-            xValueMapper: (PieChartData data, _) => data.gender,
-            yValueMapper: (PieChartData data, _) => data.percentage,
-            dataLabelSettings: const DataLabelSettings(
-              isVisible: true,
-              labelPosition: ChartDataLabelPosition.outside,
-            ),
-            dataLabelMapper: (PieChartData data, _) => "${data.gender}\n${data.percentage}%"
-          )
+              dataSource: chartData,
+              xValueMapper: (PieChartData data, _) => data.gender,
+              yValueMapper: (PieChartData data, _) => data.percentage,
+              dataLabelSettings: const DataLabelSettings(
+                isVisible: true,
+                labelPosition: ChartDataLabelPosition.outside,
+              ),
+              dataLabelMapper: (PieChartData data, _) =>
+                  "${data.gender}\n${data.percentage}%")
         ],
       ),
     );
@@ -481,4 +483,66 @@ class PieChartData {
   final double percentage;
 
   PieChartData(this.gender, this.percentage);
+}
+
+class DegreeChart extends StatelessWidget {
+  final dynamic participants;
+  const DegreeChart({
+    Key? key,
+    required this.participants,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print(participants);
+    final bachelorCount = participants.fold(
+        0,
+        (count, participant) => count +=
+            (participant['participant']['degree'] == "Bachelor's degree" ||
+                    participant['participant']['degree'] == "UG")
+                ? 1
+                : 0);
+    print(bachelorCount);
+
+    final bachelorPercentage = (bachelorCount / participants.length) * 100;
+
+    final masterCount = participants.fold(
+        0,
+        (count, participant) => count +=
+            (participant['participant']['degree'] == "Master's degree")
+                ? 1
+                : 0);
+
+    final masterPercentage = (masterCount / participants.length) * 100;
+
+    final List<DegreePieChartData> chartData = [
+      DegreePieChartData('Bachelor', bachelorPercentage),
+      DegreePieChartData('Master', masterPercentage)
+    ].where((data) => data.percentage != 0.0).toList();
+    return SizedBox(
+      height: 300,
+      child: SfCircularChart(
+        series: <CircularSeries>[
+          // Create pie series
+          PieSeries<DegreePieChartData, String>(
+              dataSource: chartData,
+              xValueMapper: (DegreePieChartData data, _) => data.degree,
+              yValueMapper: (DegreePieChartData data, _) => data.percentage,
+              dataLabelSettings: const DataLabelSettings(
+                isVisible: true,
+                labelPosition: ChartDataLabelPosition.outside,
+              ),
+              dataLabelMapper: (DegreePieChartData data, _) =>
+                  "${data.degree}\n${data.percentage}%")
+        ],
+      ),
+    );
+  }
+}
+
+class DegreePieChartData {
+  final String degree;
+  final double percentage;
+
+  DegreePieChartData(this.degree, this.percentage);
 }
