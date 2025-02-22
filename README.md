@@ -11,6 +11,7 @@ This Flutter-based research-focused application is designed for conducting word 
 • Define the list of words to be displayed
 
 • Set the frequency of word appearance
+
 • Adjust the display duration for each word
 
 Experiment Execution 👀
